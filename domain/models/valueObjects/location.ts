@@ -1,4 +1,4 @@
-import EventEmitter from 'events';
+import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 import { Speed } from './speed';
 
 export class Location extends EventEmitter {

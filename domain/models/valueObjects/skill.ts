@@ -18,12 +18,12 @@ export class Skill {
             if(!this._ristricted) {
                 return;
             }
-            emitter.on('change', ()=> {
+            emitter.addListener('change', ()=> {
                 this._activated = _condition.active;
             });
         });
         this._timing.emitters.forEach(emitter => {
-            emitter.on('change', ()=> {
+            emitter.addListener('change', ()=> {
                 if(!this._ristricted) {
                     return;
                 }
@@ -33,7 +33,7 @@ export class Skill {
                 this._effect.apply(this._runner);
             });
         });
-        this._ristriction.target.on('change', ()=> {
+        this._ristriction.target.addListener('change', ()=> {
             this._ristricted = !this._ristriction.activated;
         });
         

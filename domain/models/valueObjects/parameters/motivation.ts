@@ -1,30 +1,22 @@
-import EventEmitter from 'events';
+import { Modifiable } from '../modifiable';
+import { Parameter } from '../parameter';
 import { SpeedLevel } from './speedLevel';
 
-export class Motivation extends EventEmitter {
+export class Motivation extends Parameter {
     private static readonly MAX: number = 1600;
-
-    private _current: number = 0;
-    private _span: number = 0.1;
+    private static readonly DEFAULT_CURRENT: number = 0; 
+    private static readonly DEFAULT_SPAN: number = 0.1;
 
     constructor(
         private speedLevel: SpeedLevel
     ) {
-        super();
-        this.speedLevel.on('change', this.increase.bind(this));
+        super(Motivation.MAX, Motivation.DEFAULT_CURRENT, Motivation.DEFAULT_SPAN);
+        this.speedLevel.addListener('change', this.increase.bind(this));
         this.determineSpan();
     }
 
-    get span(): number {
-        return this._span;
-    }
-
-    get current(): number {
-        return this._current;
-    }
-
     get isFilled(): boolean {
-        return Motivation.MAX <= this._current;
+        return Motivation.MAX <= this._current.value;
     }
 
     private determineSpan(): void {
@@ -37,14 +29,14 @@ export class Motivation extends EventEmitter {
         
         lotList.sort((a, b) => b - a);
         // 乱数10個の最小値~乱数80個の10番目に大きい数
-        this._span = lotList[lotCountBase - 1];
+        this._span = new Modifiable(lotList[lotCountBase - 1]);
     }
 
     private increase(): void {
         if (!this.speedLevel.isMotivating()) {
             return;
         }
-        this._current = Math.min(this._current + this._span, Motivation.MAX);
-        this.emit('change', this._current);
+        this._current.value = Math.min(this._current.value + this._span.value, Motivation.MAX);
+        this.emit('change', this._current.value);
     }
 }

@@ -1,6 +1,6 @@
-import { EventEmitter } from 'events';
+import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 import { Chip, ElementType } from '../entities/chip';
-import { Motivation } from './motivation';
+import { Motivation } from './parameters/motivation';
 
 const REQUIREMENTS_PER_TIER = 1000;
 
@@ -14,11 +14,11 @@ export class ActiveSkillEventEmitter extends EventEmitter {
         private _motivation: Motivation
     ){
         super();
-        this._motivation.on('change', () => {
+        this._motivation.addListener('change', () => {
             if(!this.available){
                 return;
             }
-            if(this.requirements > this._motivation.current) {
+            if(this.requirements > this._motivation.current.value) {
                 return;
             }
             this._canInteract = true;

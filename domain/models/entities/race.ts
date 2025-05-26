@@ -1,4 +1,4 @@
-import EventEmitter from 'events';
+import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 import { NpcControl } from '../services/npcControl';
 import { Location } from '../valueObjects/location';
 import { RaceState } from '../valueObjects/race_state';
@@ -6,7 +6,7 @@ import { RaceTime } from '../valueObjects/race_time';
 import { Runner } from './runner';
 
 export class Race extends EventEmitter {
-    private static readonly RUNNERS_COUNT = 6;
+    private static readonly RUNNERS_COUNT = 7;
     static readonly DISTANCE = 144000; // 2400 * 60
 
     private _raceTime: RaceTime;
@@ -17,11 +17,15 @@ export class Race extends EventEmitter {
     constructor() {
         super();
         this._raceTime = new RaceTime();
-        this._raceTime.on('change', this.checkStart.bind(this));
+        this._raceTime.addListener('change', this.checkStart.bind(this));
     }
 
     get first(): Runner {
         return this._runners[0];
+    }
+
+    get runners(): Runner[] {
+        return this._runners;
     }
 
     get raceTime(): RaceTime {
@@ -67,8 +71,8 @@ export class Race extends EventEmitter {
 
     summonRunners(): void {
         for (let i = this._runners.length; i < Race.RUNNERS_COUNT; i++) {
-            const runner = Runner.create(this);
-            new NpcControl(runner);
+            const runner = Runner.create(this, i);
+            new NpcControl(runner, this);
             this._runners.push(runner);
         }
         this._runners.sort(() => Math.random() - 0.5); // shuffle

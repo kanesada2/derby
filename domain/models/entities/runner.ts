@@ -1,9 +1,9 @@
-import { BaseSpeed } from '../valueObjects/baseSpeed';
-import { Health } from '../valueObjects/health';
 import { Location } from '../valueObjects/location';
-import { Motivation } from '../valueObjects/motivation';
+import { BaseSpeed } from '../valueObjects/parameters/baseSpeed';
+import { Health } from '../valueObjects/parameters/health';
+import { Motivation } from '../valueObjects/parameters/motivation';
+import { SpeedLevel } from '../valueObjects/parameters/speedLevel';
 import { Speed } from '../valueObjects/speed';
-import { SpeedLevel } from '../valueObjects/speedLevel';
 import { Concentrated } from '../valueObjects/status/concentrated';
 import { Exhausted } from '../valueObjects/status/exhausted';
 import { Motivated } from '../valueObjects/status/motivated';
@@ -14,7 +14,7 @@ export class Runner {
     private _playable: boolean = false;
 
     constructor(
-        private _race: Race,
+        private _id: number,
         private _location: Location,
         private _baseSpeed: BaseSpeed,
         private _motivation: Motivation,
@@ -27,8 +27,8 @@ export class Runner {
         private _exhausted: Exhausted
     ) {}
 
-    get race(): Race {
-        return this._race;
+    get id(): number {
+        return this._id;
     }
 
     get baseSpeed(): BaseSpeed {
@@ -71,20 +71,20 @@ export class Runner {
         return this._exhausted;
     }
 
-    static create(race: Race): Runner {
-        const speedLevel = new SpeedLevel();
+    static create(race: Race, id: number): Runner {
+        const health = new Health();
+        const speedLevel = new SpeedLevel(health);
         const motivation = new Motivation(speedLevel);
         const motivated = new Motivated(motivation);
-        const baseSpeed = new BaseSpeed(motivated);
-        const pleasant = new Pleasant(speedLevel);
+        const baseSpeed = new BaseSpeed();
+        const pleasant = new Pleasant(speedLevel, health);
         const speed = new Speed(baseSpeed, speedLevel);
         const location = new Location(Race.DISTANCE, speed);
-        const concentrated = new Concentrated(race, location);
-        const health = new Health(speedLevel, concentrated, motivated, pleasant);
+        const concentrated = new Concentrated(race, location, health);
         const exhausted = new Exhausted(health, speedLevel, motivation);
 
         return new Runner(
-            race, location, baseSpeed, motivation, speedLevel, health, speed,
+            id,location, baseSpeed, motivation, speedLevel, health, speed,
             motivated, concentrated, pleasant, exhausted
         );
     }
@@ -110,7 +110,7 @@ export class Runner {
         if (this.exhausted.activated || !this._playable) {
             return;
         }
-        this._health.decreaseByCrawl();
         this._speedLevel.increaseByCrawl();
+        this._health.decreaseByCrawl();
     }
 }

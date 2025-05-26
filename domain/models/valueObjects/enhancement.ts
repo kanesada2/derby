@@ -1,4 +1,4 @@
-export class Modifier {
+export class Enhancement {
     constructor(
         private _health: number,
         private _speedLevel: number,

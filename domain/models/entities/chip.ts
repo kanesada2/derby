@@ -1,4 +1,4 @@
-import { Modifier } from "../valueObjects/modifier";
+import { Enhancement } from "../valueObjects/enhancement";
 import { Skill } from "../valueObjects/skill";
 
 export const Element = {
@@ -18,7 +18,7 @@ export class Chip {
         private _name: string,
         private _rank: number,
         private _element: ElementType,
-        private _modifier: Modifier,
+        private _enhancement: Enhancement,
         private _skill: Skill[],
     ) {}
 
@@ -34,8 +34,8 @@ export class Chip {
     get element(): ElementType {
         return this._element;
     }
-    get modifier(): Modifier {
-        return this._modifier;
+    get enhancement(): Enhancement {
+        return this._enhancement;
     }
     get skill(): Skill[] {
         return this._skill;

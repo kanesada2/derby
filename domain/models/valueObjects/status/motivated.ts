@@ -1,5 +1,5 @@
-import EventEmitter from 'events';
-import { Motivation } from '../motivation';
+import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
+import { Motivation } from '../parameters/motivation';
 
 export class Motivated extends EventEmitter {
     private _activated: boolean = false;
@@ -8,7 +8,7 @@ export class Motivated extends EventEmitter {
         private motivation: Motivation
     ) {
         super();
-        this.motivation.on('change', this.check.bind(this));
+        this.motivation.addListener('change', this.check.bind(this));
     }
 
     get activated(): boolean {

@@ -1,14 +1,19 @@
-import EventEmitter from 'events';
-import { SpeedLevel } from '../speedLevel';
+import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
+import { Health } from '../parameters/health';
+import { SpeedLevel } from '../parameters/speedLevel';
 
 export class Pleasant extends EventEmitter {
+    private static readonly MODIFIER_KEY = 'pleasant';
+    private static readonly HEALTH_MODIFIER = -0.3;
+
     private _activated: boolean = false;
 
     constructor(
-        private speedLevel: SpeedLevel
+        private speedLevel: SpeedLevel,
+        private health: Health
     ) {
         super();
-        this.speedLevel.on('change', this.check.bind(this));
+        this.speedLevel.addListener('change', this.check.bind(this));
     }
 
     get activated(): boolean {
@@ -26,11 +31,15 @@ export class Pleasant extends EventEmitter {
 
     private activate(): void {
         this._activated = true;
+        this.health.addSpanModifier(Pleasant.MODIFIER_KEY, Pleasant.HEALTH_MODIFIER);
+        this.health.addCrawlSpanModifier(Pleasant.MODIFIER_KEY, -1);
         this.emit('change', this._activated);
     }
 
     private deactivate(): void {
         this._activated = false;
+        this.health.removeSpanModifier(Pleasant.MODIFIER_KEY);
+        this.health.removeCrawlSpanModifier(Pleasant.MODIFIER_KEY);
         this.emit('change', this._activated);
     }
 }

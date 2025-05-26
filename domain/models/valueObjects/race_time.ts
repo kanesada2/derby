@@ -1,4 +1,4 @@
-import EventEmitter from 'events';
+import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 
 export class RaceTime extends EventEmitter {
     private _fromStart: number = 0;
