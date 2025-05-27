@@ -26,14 +26,14 @@ export function updateGameEntities(entities: any, race: Race, playableRunner: Ru
   const positions = RaceRenderingSystem.calculateRunnerPositions(race, playableRunner);
   const newEntities = { ...entities };
 
-  // 既存エンティティをクリア
+  // 既存のランナーエンティティをクリア
   Object.keys(newEntities).forEach(key => {
     if (key.startsWith('runner_')) {
       delete newEntities[key];
     }
   });
 
-  // 新しい位置でエンティティを更新
+  // 新しい位置でランナーエンティティを更新
   positions.forEach((pos) => {
     const entityKey = `runner_${pos.runner.id}`;
     newEntities[entityKey] = {

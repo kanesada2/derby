@@ -7,6 +7,7 @@ import { Speed } from '../valueObjects/speed';
 import { Concentrated } from '../valueObjects/status/concentrated';
 import { Exhausted } from '../valueObjects/status/exhausted';
 import { Motivated } from '../valueObjects/status/motivated';
+import { Motivating } from '../valueObjects/status/motivating';
 import { Pleasant } from '../valueObjects/status/pleasant';
 import { Race } from './race';
 
@@ -22,6 +23,7 @@ export class Runner {
         private _health: Health,
         private _speed: Speed,
         private _motivated: Motivated,
+        private _motivating: Motivating,
         private _concentrated: Concentrated,
         private _pleasant: Pleasant,
         private _exhausted: Exhausted
@@ -59,6 +61,10 @@ export class Runner {
         return this._motivated;
     }
 
+    get motivating(): Motivating {
+        return this._motivating;
+    }
+
     get concentrated(): Concentrated {
         return this._concentrated;
     }
@@ -76,6 +82,7 @@ export class Runner {
         const speedLevel = new SpeedLevel(health);
         const motivation = new Motivation(speedLevel);
         const motivated = new Motivated(motivation);
+        const motivating = new Motivating(speedLevel, motivation);
         const baseSpeed = new BaseSpeed();
         const pleasant = new Pleasant(speedLevel, health);
         const speed = new Speed(baseSpeed, speedLevel);
@@ -85,7 +92,7 @@ export class Runner {
 
         return new Runner(
             id,location, baseSpeed, motivation, speedLevel, health, speed,
-            motivated, concentrated, pleasant, exhausted
+            motivated, motivating, concentrated, pleasant, exhausted
         );
     }
 

@@ -9,7 +9,6 @@ interface MotivationDisplayProps {
 
 export function MotivationDisplay({ motivation }: MotivationDisplayProps) {
   const [current, setCurrent] = useState(motivation.current.value);
-  const max = 1600;
 
   useEffect(() => {
     const handleChange = (value: number) => {
@@ -23,20 +22,42 @@ export function MotivationDisplay({ motivation }: MotivationDisplayProps) {
     };
   }, [motivation]);
 
+  // 5本のゲージの状態を計算
+  const gaugeSteps = 5;
+  const stepSize = Motivation.MAX / gaugeSteps;
+  
+  const renderGauges = () => {
+    const gauges = [];
+    for (let i = 0; i < gaugeSteps; i++) {
+      const stepMin = i * stepSize;
+      const isActive = current > stepMin;
+      const fillRatio = isActive ? Math.min((current - stepMin) / stepSize, 1) : 0;
+      
+      gauges.push(
+        <View key={i} style={styles.gaugeContainer}>
+          <View style={styles.gaugeBackground}>
+            <View 
+              style={[
+                styles.gaugeFill, 
+                { width: `${fillRatio * 100}%` }
+              ]} 
+            />
+          </View>
+        </View>
+      );
+    }
+    return gauges;
+  };
+
   return (
     <View style={styles.container}>
       <ThemedText style={styles.label} type="default">ドロン:</ThemedText>
       <View style={styles.barContainer}>
-        <View style={styles.barBackground}>
-          <View 
-            style={[
-              styles.barFill, 
-              { width: `${(current / max) * 100}%` }
-            ]} 
-          />
+        <View style={styles.gaugesContainer}>
+          {renderGauges()}
         </View>
         <ThemedText style={styles.value} type="default">
-          {Math.round(current)}/{max}
+          {Math.round(current)}/{Motivation.MAX}
         </ThemedText>
       </View>
     </View>
@@ -58,14 +79,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  barBackground: {
+  gaugesContainer: {
     flex: 1,
+    flexDirection: 'row',
+    marginRight: 8,
+    gap: 2,
+  },
+  gaugeContainer: {
+    flex: 1,
+  },
+  gaugeBackground: {
     height: 8,
     backgroundColor: '#ddd',
     borderRadius: 4,
-    marginRight: 8,
   },
-  barFill: {
+  gaugeFill: {
     height: '100%',
     backgroundColor: '#2196F3',
     borderRadius: 4,

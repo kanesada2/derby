@@ -5,8 +5,6 @@ export class NpcControl {
     private logged: boolean = false;
     private crawlWeight: number = 0;
 
-    private motivatePreference: number = 1;
-    private motivatePreferenceAggregated: number = 0;
     private pleasantPreference: number = 1;
     private concentratePreference: number = 1;
     private appropriatePreference: number = 1;
@@ -20,9 +18,6 @@ export class NpcControl {
     }
 
     private determinePreferences(): void {
-        this.motivatePreference *= this.runner.motivation.span.value;
-        this.motivatePreference /= this.runner.speedLevel.max.value;
-
         const pleasantAptitude = (this.runner.speedLevel.pleasantCenter - 1.4) * (this.runner.speedLevel.max.value - 1.8);
         if (pleasantAptitude < 0) {
             this.pleasantPreference *= pleasantAptitude * -100; // 最大で0.2×0.2なのでスケール合わせと、符号がマイナスになるときだけ加算するので
@@ -42,12 +37,6 @@ export class NpcControl {
         const appropriateAmount = this.runner.health.current.value * this.runner.baseSpeed.current.value / (this.runner.location.max - this.runner.location.current) * 1.2;
         const appropriateSpeedLevel = (appropriateAmount + 4) / 5;
         this.crawlWeight += 20 * (appropriateSpeedLevel - this.runner.speedLevel.current.value) * Math.random() * this.appropriatePreference;
-        
-        if (this.motivatePreferenceAggregated > 600 && !this.runner.motivated.activated && this.runner.speedLevel.current.value < this.runner.speedLevel.motivatingMin) {
-            this.crawlWeight += 300;
-        }
-        
-        this.motivatePreferenceAggregated += this.motivatePreference * Math.random() * Math.random();
     }
 
     private play(): void {

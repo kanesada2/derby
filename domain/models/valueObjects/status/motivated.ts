@@ -8,7 +8,7 @@ export class Motivated extends EventEmitter {
         private motivation: Motivation
     ) {
         super();
-        this.motivation.addListener('change', this.check.bind(this));
+        //this.motivation.addListener('change', this.check.bind(this));
     }
 
     get activated(): boolean {
@@ -16,6 +16,7 @@ export class Motivated extends EventEmitter {
     }
 
     private check(): void {
+
         if (this._activated) {
             return;
         }

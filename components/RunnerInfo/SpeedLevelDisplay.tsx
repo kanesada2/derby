@@ -28,7 +28,7 @@ export function SpeedLevelDisplay({ speedLevel }: SpeedLevelDisplayProps) {
       <ThemedText style={styles.label} type="default">カケアシ:</ThemedText>
       <View style={styles.barContainer}>
         <View style={styles.barBackground}>
-          {current >= 1 && (
+          {current > 1 && (
             <View style={[
               styles.barFill, 
               {  width: `${((current - 1) / (max - 1)) * 100}%` }

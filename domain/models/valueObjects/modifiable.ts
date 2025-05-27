@@ -7,6 +7,7 @@ export class Modifiable {
     public value: number = 0;
 
     constructor(private _base: number){
+        this.value = _base;
     }
 
     private updateValue(): void {

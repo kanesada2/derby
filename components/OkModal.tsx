@@ -1,7 +1,7 @@
 import React from 'react';
-import { Modal, StyleSheet, Pressable, View } from 'react-native';
-import { ThemedView, ThemedViewProps } from './ThemedView';
+import { Modal, Pressable, StyleSheet, View } from 'react-native';
 import { ThemedText } from './ThemedText';
+import { ThemedView, ThemedViewProps } from './ThemedView';
 
 export interface OkModalProps extends ThemedViewProps {
   visible: boolean;
@@ -69,13 +69,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 24,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
     elevation: 5,
   },
   title: {

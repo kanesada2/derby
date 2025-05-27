@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Animated } from 'react-native';
-import { ThemedText } from './ThemedText';
+import { Animated, StyleSheet, View } from 'react-native';
 import { Race } from '../domain/models/entities/race';
+import { ThemedText } from './ThemedText';
 
 interface CountdownDisplayProps {
   race: Race;
@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    pointerEvents: 'none',
     zIndex: 1000,
   },
   countdownContainer: {
