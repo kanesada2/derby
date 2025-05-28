@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { ThemedText } from '../ThemedText';
+import { StyleSheet, View } from 'react-native';
 import { Location } from '../../domain/models/valueObjects/location';
+import { ThemedText } from '../ThemedText';
 
 interface LocationDisplayProps {
   location: Location;
@@ -26,6 +26,16 @@ export function LocationDisplay({ location }: LocationDisplayProps) {
   return (
     <View style={styles.container}>
       <ThemedText style={styles.label} type="default">キョリ:</ThemedText>
+      <View style={styles.barContainer}>
+        <View style={styles.barBackground}>
+          <View 
+            style={[
+              styles.barFill, 
+              { width: `${(current / max) * 100}%` }
+            ]} 
+          />
+        </View>
+      </View>
       <ThemedText style={styles.value} type="default">
         {Math.round(current)}/{Math.round(max)}
       </ThemedText>
@@ -46,5 +56,22 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 12,
     flex: 1,
+  },
+  barContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  barBackground: {
+    flex: 1,
+    height: 8,
+    backgroundColor: '#ddd',
+    borderRadius: 4,
+    marginRight: 8,
+  },
+  barFill: {
+    height: '100%',
+    backgroundColor: '#e67e22',
+    borderRadius: 4,
   },
 });

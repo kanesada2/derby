@@ -55,8 +55,8 @@ export class NpcControl {
     private log(): void {
         console.log(
             `${this.race.indexOf(this.runner) + 1},${this.runner.baseSpeed.current.value},` +
-            `${this.runner.speedLevel.max},${this.runner.health.max},${this.runner.motivation.span},` +
-            `${this.runner.motivation.current}`
+            `${this.runner.speedLevel.max.value},${this.runner.health.max.value},${this.runner.motivation.span.value},` +
+            `${this.runner.motivation.current.value}`
         );
         this.logged = true;
     }

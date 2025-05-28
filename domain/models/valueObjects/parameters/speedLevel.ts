@@ -8,6 +8,7 @@ export class SpeedLevel extends Parameter {
     static readonly MAX_BASE = 1.4;
     static readonly MAX_AMPLIFIER_MAX = 0.4;
     static readonly INCREASE_SPAN = 0.1;
+    static readonly DECRASE_TICKS = 300;
     static readonly PLEASANT_MAX_MIN = 1.2;
     static readonly EXHAUSTED_BASE = 0.5;
     static readonly MODIFIER_KEY = 'speedLevel';
@@ -22,7 +23,7 @@ export class SpeedLevel extends Parameter {
     constructor(private health:Health) {
         super(SpeedLevel.MAX_MAX, SpeedLevel.MIN, SpeedLevel.INCREASE_SPAN);
         this.determineParameters();
-        this._decreaseSpan = new Modifiable(SpeedLevel.INCREASE_SPAN / 60);
+        this._decreaseSpan = new Modifiable(this._span.value / SpeedLevel.DECRASE_TICKS);
     }
 
     get pleasantCenter(): number {
