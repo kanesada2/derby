@@ -2,8 +2,8 @@ import { Modifiable } from '../modifiable';
 import { Parameter } from '../parameter';
 
 export class Health extends Parameter {
-    private static readonly MAX_BASE = 12000; // 200 * 60
-    private static readonly MAX_AMPLIFIER_MAX = 6000; // 100 * 60
+    static readonly MAX_BASE = 12000; // 200 * 60
+    static readonly MAX_AMPLIFIER_MAX = 6000; // 100 * 60
 
     private crawlCost: Modifiable;
 

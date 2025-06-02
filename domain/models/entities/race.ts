@@ -99,16 +99,19 @@ export class Race extends EventEmitter {
     }
 
     update(dt: number): void {
-        if (this.playable.location.isReached) {
+        /*if (this.playable.location.isReached) {
             if (!this.isFinished) {
                 this._state = RaceState.finished;
                 this.emit('change', this._state);
             }
             return;
-        }
+        }*/
 
         if (this._runners[Race.RUNNERS_COUNT - 1].location.isReached) {
-            //reset();
+            if (!this.isFinished) {
+                this._state = RaceState.finished;
+                this.emit('change', this._state);
+            }
             return;
         }
 

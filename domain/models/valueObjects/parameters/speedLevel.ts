@@ -99,9 +99,8 @@ export class SpeedLevel extends Parameter {
         return SpeedLevel.MAX_MAX / this.current.value;
     }   
 
-    fixByExhausted(modifier: number): void {
-        const amplifier = (SpeedLevel.MIN - SpeedLevel.EXHAUSTED_BASE) * modifier;
-        this._current.value = SpeedLevel.EXHAUSTED_BASE + amplifier;
+    fixByExhausted(): void {
+        this._current.value = SpeedLevel.EXHAUSTED_BASE;
         this._exhausted = true;
         this.emit('change', this._current.value);
     }

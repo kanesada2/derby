@@ -31,7 +31,7 @@ export class Exhausted extends EventEmitter {
 
     private activate(): void {
         this._activated = true;
-        this.speedLevel.fixByExhausted(this.motivation.span.value);
+        this.speedLevel.fixByExhausted();
         this.emit('change', this._activated);
     }
 }
