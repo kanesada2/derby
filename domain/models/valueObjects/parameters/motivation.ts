@@ -7,10 +7,18 @@ export class Motivation extends Parameter {
     private static readonly DEFAULT_SPAN: number = 1;
 
     constructor(
-        private speedLevel: SpeedLevel
+        private speedLevel: SpeedLevel,
+        enhancement: number|null = null
     ) {
         super(Motivation.MAX, Motivation.DEFAULT_CURRENT, Motivation.DEFAULT_SPAN);
+        if(enhancement !== null) {
+            this._span.value = Motivation.calculateSpanWithEnhancement(enhancement);
+        }
         this.speedLevel.addListener('change', this.increase.bind(this));
+    }
+
+    static calculateSpanWithEnhancement(enhancement: number): number {
+        return Motivation.DEFAULT_SPAN * (1 + enhancement / 100);
     }
 
     get isFilled(): boolean {

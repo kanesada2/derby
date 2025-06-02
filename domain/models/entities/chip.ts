@@ -17,9 +17,10 @@ export class Chip {
         private _id: string,
         private _name: string,
         private _rank: number,
-        private _element: ElementType,
+        private _element: ElementType[],
         private _enhancement: Enhancement,
         private _skill: Skill[],
+        private _description: string = '',
     ) {}
 
     get id(): string {
@@ -31,7 +32,10 @@ export class Chip {
     get rank(): number {
         return this._rank;
     }
-    get element(): ElementType {
+    get cost(): number {
+        return this._rank + 1;
+    }
+    get element(): ElementType[] {
         return this._element;
     }
     get enhancement(): Enhancement {
@@ -39,5 +43,8 @@ export class Chip {
     }
     get skill(): Skill[] {
         return this._skill;
+    }
+    get description(): string {
+        return this._description;
     }
 }

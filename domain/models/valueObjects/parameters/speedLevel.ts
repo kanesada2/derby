@@ -20,9 +20,9 @@ export class SpeedLevel extends Parameter {
 
     private _decreaseSpan: Modifiable;
 
-    constructor(private health:Health) {
+    constructor(private health:Health, enhancement: number|null = null) {
         super(SpeedLevel.MAX_MAX, SpeedLevel.MIN, SpeedLevel.INCREASE_SPAN);
-        this.determineParameters();
+        this.determineParameters(enhancement);
         this._decreaseSpan = new Modifiable(this._span.value / SpeedLevel.DECRASE_TICKS);
     }
 
@@ -34,17 +34,25 @@ export class SpeedLevel extends Parameter {
         return this._motivatingMin;
     }
 
-    private determineParameters(): void {
-        const lotCountBase = 10;
-        const lotList: number[] = [];
-        
-        for (let i = 0; i < lotCountBase; i++) {
-            lotList.push(Math.random());
+    static calculateMaxWithEnhancement(enhancement: number): number {
+        return (SpeedLevel.MAX_BASE - SpeedLevel.MIN) * (1 + enhancement / 100) + SpeedLevel.MIN;
+    }
+
+    private determineParameters(enhancement: number|null): void {
+        if(enhancement !== null) {
+            this._max.value = SpeedLevel.calculateMaxWithEnhancement(enhancement);
+        } else {
+            const lotCountBase = 10;
+            const lotList: number[] = [];
+            
+            for (let i = 0; i < lotCountBase; i++) {
+                lotList.push(Math.random());
+            }
+            
+            lotList.sort((a, b) => b - a);
+            // 乱数10個の最小値~乱数80個の10番目に大きい数
+            this._max.value = SpeedLevel.MAX_BASE + SpeedLevel.MAX_AMPLIFIER_MAX * lotList[lotCountBase - 1];
         }
-        
-        lotList.sort((a, b) => b - a);
-        // 乱数10個の最小値~乱数80個の10番目に大きい数
-        this._max.value = SpeedLevel.MAX_BASE + SpeedLevel.MAX_AMPLIFIER_MAX * lotList[lotCountBase - 1];
         this._motivatingMin = this._max.value - SpeedLevel.INCREASE_SPAN;
         
         const randomizer = (this._motivatingMin - SpeedLevel.PLEASANT_MAX_MIN) * Math.random();

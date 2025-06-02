@@ -1,3 +1,4 @@
+import { Enhancement } from '../valueObjects/enhancement';
 import { Location } from '../valueObjects/location';
 import { BaseSpeed } from '../valueObjects/parameters/baseSpeed';
 import { Health } from '../valueObjects/parameters/health';
@@ -84,6 +85,25 @@ export class Runner {
         const motivated = new Motivated(motivation);
         const motivating = new Motivating(speedLevel, motivation);
         const baseSpeed = new BaseSpeed();
+        const pleasant = new Pleasant(speedLevel, health);
+        const speed = new Speed(baseSpeed, speedLevel);
+        const location = new Location(Race.DISTANCE, speed);
+        const concentrated = new Concentrated(race, location, health);
+        const exhausted = new Exhausted(health, speedLevel, motivation);
+
+        return new Runner(
+            id,location, baseSpeed, motivation, speedLevel, health, speed,
+            motivated, motivating, concentrated, pleasant, exhausted
+        );
+    }
+
+    static createWithEnhancement(enhancement : Enhancement, race: Race, id: number): Runner {
+        const health = new Health(enhancement.health);
+        const speedLevel = new SpeedLevel(health, enhancement.speedLevel);
+        const motivation = new Motivation(speedLevel, enhancement.motivation);
+        const motivated = new Motivated(motivation);
+        const motivating = new Motivating(speedLevel, motivation);
+        const baseSpeed = new BaseSpeed(true);
         const pleasant = new Pleasant(speedLevel, health);
         const speed = new Speed(baseSpeed, speedLevel);
         const location = new Location(Race.DISTANCE, speed);

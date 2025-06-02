@@ -4,10 +4,12 @@ export class BaseSpeed extends Parameter {
     private static readonly BASE = 13;
 
 
-    constructor(
+    constructor(isEnhanced: boolean = false
     ) {
         super(BaseSpeed.BASE * 2, BaseSpeed.BASE, 1);
-        this._calculateInitialValue();
+        if(!isEnhanced) {
+            this._calculateInitialValue();
+        }
     }
 
 

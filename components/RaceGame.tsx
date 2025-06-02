@@ -1,4 +1,5 @@
 import { Runner } from "@/domain/models/entities/runner";
+import { useEnhancement } from "@/contexts/EnhancementContext";
 import React, { useState } from "react";
 import { AppRegistry, StyleSheet } from "react-native";
 import { GameEngine } from "react-native-game-engine";
@@ -16,12 +17,13 @@ export default function RaceGame() {
   const [modalVisible, setModalVisible] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [gameEntities, setGameEntities] = useState<any>(null);
+  const { enhancement } = useEnhancement();
 
   const handleOk = () => {
     // ゲームエンティティを初期化
 
     const race = new Race();
-    const playableRunner = Runner.create(race, 0);
+    const playableRunner = Runner.createWithEnhancement(enhancement, race, 0);
     race.addPlayableRunner(playableRunner);
     race.summonRunners();
     const entities = createGameEntities(race, playableRunner);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { ThemedView, ThemedViewProps } from './ThemedView';
 
@@ -19,14 +19,13 @@ export function OkModal({
   darkColor, 
   ...otherProps
 }: OkModalProps) {
+  if (!visible) {
+    return null;
+  }
+
   return (
-    <Modal
-      animationType="fade"
-      transparent={true}
-      visible={visible}
-      onRequestClose={onOk}
-    >
-      <View style={styles.centeredView}>
+    <View style={styles.overlay} pointerEvents="box-none">
+      <View style={styles.centeredView} pointerEvents="box-none">
         <ThemedView
           lightColor={lightColor}
           darkColor={darkColor}
@@ -53,23 +52,38 @@ export function OkModal({
           </Pressable>
         </ThemedView>
       </View>
-    </Modal>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 1000,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
   centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalView: {
     width: '80%',
+    maxWidth: 400,
     borderRadius: 20,
     padding: 24,
     alignItems: 'center',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
     elevation: 5,
   },
   title: {

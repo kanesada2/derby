@@ -7,9 +7,9 @@ export class Health extends Parameter {
 
     private crawlCost: Modifiable;
 
-    constructor() {
+    constructor(enhancement: number|null = null) {
         super(Health.MAX_BASE, Health.MAX_BASE, 1);
-        this.determineMax();
+        this.determineMax(enhancement);
         this.crawlCost = new Modifiable(1);
         this._current.value = this._max.value;
     }
@@ -18,7 +18,15 @@ export class Health extends Parameter {
         return this._current.value <= 0;
     }
 
-    private determineMax(): void {
+    static calculateMaxWithEnhancement(enhancement: number): number {
+        return Health.MAX_BASE * (1 + enhancement / 100);
+    }
+
+    private determineMax(enhancement: number|null): void {
+        if(enhancement !== null) {
+            this._max.value = Health.calculateMaxWithEnhancement(enhancement);
+            return;
+        }
         const lotCountBase = 10;
         const lotList: number[] = [];
         
