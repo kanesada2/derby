@@ -24,25 +24,31 @@ export abstract class Parameter extends EventEmitter {
         return this._span;
     }
 
-    addMaxModifier(key: string, value: number): void {
-        this._max.addModifier({ key, value });
+    addMaxMultiplier(key: string, value: number): void {
+        this._max.addMultiplier({ key, value });
+        this.emit('change', this._max.value);
     }
 
-    addCurrentModifier(key: string, value: number): void {
-        this._current.addModifier({ key, value });
+    addCurrentMultiplier(key: string, value: number): void {
+        this._current.addMultiplier({ key, value });
+        this.emit('change', this._current.value);
     }
 
-    addSpanModifier(key: string, value: number): void {
-        this._span.addModifier({ key, value });
+    addSpanMultiplier(key: string, value: number): void {
+        this._span.addMultiplier({ key, value });
+        this.emit('change', this._span.value);
     }
 
-    removeMaxModifier(key: string): void {
-        this._max.removeModifier(key);
+    removeMaxMultiplier(key: string): void {
+        this._max.removeMultiplier(key);
+        this.emit('change', this._max.value);
     }
-    removeCurrentModifier(key: string): void {
-        this._current.removeModifier(key);
+    removeCurrentMultiplier(key: string): void {
+        this._current.removeMultiplier(key);
+        this.emit('change', this._current.value);
     }
-    removeSpanModifier(key: string): void {
-        this._span.removeModifier(key);
+    removeSpanMultiplier(key: string): void {
+        this._span.removeMultiplier(key);
+        this.emit('change', this._span.value);
     }
 }

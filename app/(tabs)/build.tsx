@@ -1,6 +1,5 @@
 import { chips } from '@/constants/chips';
-import { useEnhancement } from '@/contexts/EnhancementContext';
-import { Enhancement } from '@/domain/models/valueObjects/enhancement';
+import { useChips } from '@/contexts/ChipsContext';
 import { Health } from '@/domain/models/valueObjects/parameters/health';
 import { Motivation } from '@/domain/models/valueObjects/parameters/motivation';
 import { SpeedLevel } from '@/domain/models/valueObjects/parameters/speedLevel';
@@ -9,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Dimensions, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ThemedText } from '../../components/ThemedText';
 import { ThemedView } from '../../components/ThemedView';
-import { Chip, Element, ElementType } from '../../domain/models/entities/chip';
+import { Chip, ChipCollection, Element, ElementType } from '../../domain/models/entities/chip';
 
 const { width, height } = Dimensions.get('window');
 const maxWidth = Math.min(width, 1024);
@@ -190,27 +189,14 @@ const RunnerStats: React.FC<RunnerStatsProps> = ({ selectedChips }) => {
 export default function BuildScreen() {
   const [mockChips] = useState<Chip[]>(chips);
   const [selectedChips, setSelectedChips] = useState<Chip[]>([]);
-  const { setEnhancement } = useEnhancement();
+  const { setChips } = useChips();
   const columnCount = getColumnCount();
 
   // selectedChipsが変更されるたびにEnhancementコンテキストを更新
   useEffect(() => {
-    const totalStats = selectedChips.reduce(
-      (acc, chip) => ({
-        health: acc.health + chip.enhancement.health,
-        speedLevel: acc.speedLevel + chip.enhancement.speedLevel,
-        motivation: acc.motivation + chip.enhancement.motivation,
-      }),
-      { health: 0, speedLevel: 0, motivation: 0 }
-    );
+    setChips(new ChipCollection(selectedChips));
 
-    const enhancement = new Enhancement(
-      totalStats.health,
-      totalStats.speedLevel,
-      totalStats.motivation
-    );
-    setEnhancement(enhancement);
-  }, [selectedChips, setEnhancement]);
+  }, [selectedChips, setChips]);
 
   const handleChipPress = (chip: Chip) => {
     const isAlreadySelected = selectedChips.some(selected => selected.id === chip.id);
@@ -458,6 +444,7 @@ const styles = StyleSheet.create({
     fontSize: 6,
     color: '#333',
     textAlign: 'center',
+    lineHeight: 8,
     marginTop: 1,
   },
   selectedChipIconContainer: {
@@ -469,6 +456,7 @@ const styles = StyleSheet.create({
     fontSize: 6,
     color: '#FFD700',
     fontWeight: 'bold',
+    lineHeight: 8,
   },
   emptyChipSlot: {
     backgroundColor: '#e0e0e0',

@@ -1,11 +1,12 @@
+import { useChips } from "@/contexts/ChipsContext";
 import { Runner } from "@/domain/models/entities/runner";
-import { useEnhancement } from "@/contexts/EnhancementContext";
+import { useFocusEffect } from "expo-router";
 import React, { useState } from "react";
 import { AppRegistry, StyleSheet } from "react-native";
 import { GameEngine } from "react-native-game-engine";
 import { Race } from "../domain/models/entities/race";
 import { CountdownDisplay } from "./CountdownDisplay";
-import { createGameEntities } from "./Game/GameEntities";
+import { createGameEntities, setupElementButtons } from "./Game/GameEntities";
 import { RaceSystem } from "./Game/RaceSystem";
 import { TouchSystem } from "./Game/TouchSystem";
 import { OkModal } from "./OkModal";
@@ -17,22 +18,39 @@ export default function RaceGame() {
   const [modalVisible, setModalVisible] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [gameEntities, setGameEntities] = useState<any>(null);
-  const { enhancement } = useEnhancement();
+  const { chips } = useChips();
+  const [gameKey, setGameKey] = useState(0); // 追加
 
   const handleOk = () => {
     // ゲームエンティティを初期化
-
     const race = new Race();
-    const playableRunner = Runner.createWithEnhancement(enhancement, race, 0);
+    const playableRunner = Runner.createWithChips(chips, race, 0);
     race.addPlayableRunner(playableRunner);
     race.summonRunners();
+    
+    // ゲームエンティティを作成
     const entities = createGameEntities(race, playableRunner);
+    
+    // ランナーやレースのデータを保存（他のシステムから参照可能に）
     entities.raceData = { race, playableRunner };
+    
+    // ChipCollectionからelementTiersを取得してエンティティに設定
+    entities.elementTiers = chips.elementTiers;
+    
+    // エレメントボタンを作成
+    setupElementButtons(entities);
+    
     setGameEntities(entities);
-
+    setGameKey(prev => prev + 1);
     setModalVisible(false);
     setIsRunning(true);
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setModalVisible(true);
+    }, [])
+  );
 
   return (
     <ThemedView style={styles.container}>
@@ -47,20 +65,21 @@ export default function RaceGame() {
       </OkModal>
       {gameEntities ? (
         <GameEngine
-        style={styles.gameLoop}
-        running={isRunning}
-        entities={gameEntities}
-        systems={[RaceSystem, TouchSystem]}
-      >
-        <RunnerInfo race={gameEntities.raceData.race} runner={gameEntities.raceData.playableRunner} />
-        <CountdownDisplay race={gameEntities.raceData.race} />
-      </GameEngine>
+          key={gameKey}
+          style={styles.gameLoop}
+          running={isRunning}
+          entities={gameEntities}
+          systems={[RaceSystem, TouchSystem]}
+        >
+          <RunnerInfo race={gameEntities.raceData.race} runner={gameEntities.raceData.playableRunner} />
+          <CountdownDisplay race={gameEntities.raceData.race} />
+        </GameEngine>
       ) : (
-      <ThemedView style={styles.gameLoop}>
-        {/* GameEngine無しの状態 */}
-        {/* UI components */}
-      </ThemedView>
-    )}
+        <ThemedView style={styles.gameLoop}>
+          {/* GameEngine無しの状態 */}
+          {/* UI components */}
+        </ThemedView>
+      )}
     </ThemedView>
   );
 }
@@ -79,7 +98,7 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
-  },
+  }
 });
 
 AppRegistry.registerComponent("RaceGame", () => RaceGame);

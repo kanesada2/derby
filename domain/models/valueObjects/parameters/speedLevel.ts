@@ -13,8 +13,8 @@ export class SpeedLevel extends Parameter {
     static readonly EXHAUSTED_BASE = 0.5;
     static readonly MODIFIER_KEY = 'speedLevel';
 
-    private _pleasantMin: number = 1;
-    private _pleasantMax: number = 1;
+    pleasantMin: Modifiable = new Modifiable(1);
+    pleasantMax: Modifiable = new Modifiable(1);
     private _motivatingMin: number = 1;
     private _exhausted: boolean = false;
 
@@ -27,7 +27,7 @@ export class SpeedLevel extends Parameter {
     }
 
     get pleasantCenter(): number {
-        return (this._pleasantMax - this._pleasantMin) + SpeedLevel.MIN;
+        return (this.pleasantMax.value - this.pleasantMin.value) + SpeedLevel.MIN;
     }
 
     get motivatingMin(): number {
@@ -40,7 +40,7 @@ export class SpeedLevel extends Parameter {
 
     private determineParameters(enhancement: number|null): void {
         if(enhancement !== null) {
-            this._max.value = SpeedLevel.calculateMaxWithEnhancement(enhancement);
+            this._max = new Modifiable(SpeedLevel.calculateMaxWithEnhancement(enhancement));
         } else {
             const lotCountBase = 10;
             const lotList: number[] = [];
@@ -51,17 +51,17 @@ export class SpeedLevel extends Parameter {
             
             lotList.sort((a, b) => b - a);
             // 乱数10個の最小値~乱数80個の10番目に大きい数
-            this._max.value = SpeedLevel.MAX_BASE + SpeedLevel.MAX_AMPLIFIER_MAX * lotList[lotCountBase - 1];
+            this._max = new Modifiable(SpeedLevel.MAX_BASE + SpeedLevel.MAX_AMPLIFIER_MAX * lotList[lotCountBase - 1]);
         }
         this._motivatingMin = this._max.value - SpeedLevel.INCREASE_SPAN;
         
         const randomizer = (this._motivatingMin - SpeedLevel.PLEASANT_MAX_MIN) * Math.random();
-        this._pleasantMax = SpeedLevel.PLEASANT_MAX_MIN + randomizer;
-        this._pleasantMin = this._pleasantMax - SpeedLevel.INCREASE_SPAN;
+        this.pleasantMax = new Modifiable(SpeedLevel.PLEASANT_MAX_MIN + randomizer);
+        this.pleasantMin = new Modifiable(this.pleasantMax.value - SpeedLevel.INCREASE_SPAN);
     }
 
     isPleasant(): boolean {
-        return this._pleasantMin <= this._current.value && this._current.value <= this._pleasantMax;
+        return this.pleasantMin.value <= this._current.value && this._current.value <= this.pleasantMax.value;
     }
 
     isMotivating(): boolean {
@@ -73,10 +73,10 @@ export class SpeedLevel extends Parameter {
             return;
         }
         this._current.value = Math.max(this._current.value - this._decreaseSpan.value, SpeedLevel.MIN);
-        this.health.removeSpanModifier(SpeedLevel.MODIFIER_KEY);
-        this.health.addSpanModifier(SpeedLevel.MODIFIER_KEY, this.calcHealthModifier());
-        this.health.removeCrawlSpanModifier(SpeedLevel.MODIFIER_KEY);
-        this.health.addCrawlSpanModifier(SpeedLevel.MODIFIER_KEY ,this.calcHealthCrawlSpan());
+        this.health.removeSpanMultiplier(SpeedLevel.MODIFIER_KEY);
+        this.health.addSpanMultiplier(SpeedLevel.MODIFIER_KEY, this.calcHealthMultiplier());
+        this.health.removeCrawlSpanMultiplier(SpeedLevel.MODIFIER_KEY);
+        this.health.addCrawlSpanMultiplier(SpeedLevel.MODIFIER_KEY ,this.calcHealthCrawlSpan());
         this.emit('change', this._current.value);
     }
 
@@ -85,13 +85,13 @@ export class SpeedLevel extends Parameter {
             return;
         }
         this._current.value = Math.min(this._current.value + this._span.value, this._max.value);
-        this.health.addSpanModifier(SpeedLevel.MODIFIER_KEY, this.calcHealthModifier());
-        this.health.removeCrawlSpanModifier(SpeedLevel.MODIFIER_KEY);
-        this.health.addCrawlSpanModifier(SpeedLevel.MODIFIER_KEY ,this.calcHealthCrawlSpan());
+        this.health.addSpanMultiplier(SpeedLevel.MODIFIER_KEY, this.calcHealthMultiplier());
+        this.health.removeCrawlSpanMultiplier(SpeedLevel.MODIFIER_KEY);
+        this.health.addCrawlSpanMultiplier(SpeedLevel.MODIFIER_KEY ,this.calcHealthCrawlSpan());
         this.emit('change', this._current.value);
     }
 
-    private calcHealthModifier(): number {
+    private calcHealthMultiplier(): number {
         return (this._current.value - SpeedLevel.MIN) * 5;
     }
 
@@ -103,5 +103,19 @@ export class SpeedLevel extends Parameter {
         this._current.value = SpeedLevel.EXHAUSTED_BASE;
         this._exhausted = true;
         this.emit('change', this._current.value);
+    }
+
+    unfixByExhausted(): void {
+        this._exhausted = false;
+        this._current.value = SpeedLevel.MIN;
+        this.emit('change', this._current.value);
+    }
+
+    addDecreaseSpanMultiplier(key: string, value: number): void {
+        this._decreaseSpan.addMultiplier({key, value});
+    }
+
+    removeDecreaseSpanMultiplier(key: string): void {
+        this._decreaseSpan.removeMultiplier(key);
     }
 }

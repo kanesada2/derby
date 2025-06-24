@@ -3,6 +3,7 @@ import { SpeedLevel } from './speedLevel';
 
 export class Motivation extends Parameter {
     public static readonly MAX: number = 15000;
+    public static readonly UNIT: number = 3000;
     private static readonly DEFAULT_CURRENT: number = 0; 
     private static readonly DEFAULT_SPAN: number = 1;
 
@@ -23,6 +24,10 @@ export class Motivation extends Parameter {
 
     get isFilled(): boolean {
         return Motivation.MAX <= this._current.value;
+    }
+
+    get isExceedUnit(): boolean {
+        return Motivation.UNIT < this._current.value;
     }
 
     private increase(): void {

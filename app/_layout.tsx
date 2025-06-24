@@ -4,8 +4,8 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
+import { ChipsProvider } from '@/contexts/ChipsContext';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { EnhancementProvider } from '@/contexts/EnhancementContext';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -19,7 +19,7 @@ export default function RootLayout() {
   }
 
   return (
-    <EnhancementProvider>
+    <ChipsProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -27,6 +27,6 @@ export default function RootLayout() {
         </Stack>
         <StatusBar style="auto" />
       </ThemeProvider>
-    </EnhancementProvider>
+    </ChipsProvider>
   );
 }

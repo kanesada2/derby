@@ -1,6 +1,5 @@
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 import { Health } from '../parameters/health';
-import { Motivation } from '../parameters/motivation';
 import { SpeedLevel } from '../parameters/speedLevel';
 
 export class Exhausted extends EventEmitter {
@@ -9,7 +8,6 @@ export class Exhausted extends EventEmitter {
     constructor(
         private health: Health,
         private speedLevel: SpeedLevel,
-        private motivation: Motivation
     ) {
         super();
         this.health.addListener('change', this.check.bind(this));
@@ -20,18 +18,27 @@ export class Exhausted extends EventEmitter {
     }
 
     private check(): void {
-        if (this._activated) {
-            return;
+        if (this.health.isExhausted) {
+            if(!this._activated) {
+                this.activate();
+            }
+        }else{
+            if(this._activated) {
+                this.deactivate();
+            }
         }
-        if (!this.health.isExhausted) {
-            return;
-        }
-        this.activate();
+        
     }
 
     private activate(): void {
         this._activated = true;
         this.speedLevel.fixByExhausted();
+        this.emit('change', this._activated);
+    }
+
+    private deactivate(): void {
+        this._activated = false;
+        this.speedLevel.unfixByExhausted();
         this.emit('change', this._activated);
     }
 }

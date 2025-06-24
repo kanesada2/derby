@@ -13,7 +13,7 @@ export function HealthDisplay({ health }: HealthDisplayProps) {
 
   useEffect(() => {
     const handleChange = (value: number) => {
-      setCurrent(value);
+      setCurrent(health.current.value);
     };
 
     health.addListener('change', handleChange);

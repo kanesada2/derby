@@ -31,15 +31,15 @@ export class Pleasant extends EventEmitter {
 
     private activate(): void {
         this._activated = true;
-        this.health.addSpanModifier(Pleasant.MODIFIER_KEY, Pleasant.HEALTH_MODIFIER);
-        this.health.addCrawlSpanModifier(Pleasant.MODIFIER_KEY, -1);
+        this.health.addSpanMultiplier(Pleasant.MODIFIER_KEY, Pleasant.HEALTH_MODIFIER);
+        this.health.addCrawlSpanMultiplier(Pleasant.MODIFIER_KEY, -1);
         this.emit('change', this._activated);
     }
 
     private deactivate(): void {
         this._activated = false;
-        this.health.removeSpanModifier(Pleasant.MODIFIER_KEY);
-        this.health.removeCrawlSpanModifier(Pleasant.MODIFIER_KEY);
+        this.health.removeSpanMultiplier(Pleasant.MODIFIER_KEY);
+        this.health.removeCrawlSpanMultiplier(Pleasant.MODIFIER_KEY);
         this.emit('change', this._activated);
     }
 }

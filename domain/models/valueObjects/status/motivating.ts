@@ -31,7 +31,7 @@ export class Motivating extends EventEmitter {
             return;
         }
         this._activated = true;
-        this.motivation.addSpanModifier(Motivating.MODIFIER_KEY, 1);
+        this.motivation.addSpanMultiplier(Motivating.MODIFIER_KEY, 1);
         this.emit('change', this._activated);
     }
 
@@ -40,7 +40,7 @@ export class Motivating extends EventEmitter {
             return;
         }
         this._activated = false;
-        this.motivation.removeSpanModifier(Motivating.MODIFIER_KEY);
+        this.motivation.removeSpanMultiplier(Motivating.MODIFIER_KEY);
         this.emit('change', this._activated);
     }
 }

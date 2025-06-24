@@ -1,15 +1,31 @@
-import { Enhancement } from '../valueObjects/enhancement';
+import { RistrictionNames } from '@/constants/SkillNames';
 import { Location } from '../valueObjects/location';
 import { BaseSpeed } from '../valueObjects/parameters/baseSpeed';
 import { Health } from '../valueObjects/parameters/health';
 import { Motivation } from '../valueObjects/parameters/motivation';
 import { SpeedLevel } from '../valueObjects/parameters/speedLevel';
+import { Skill } from '../valueObjects/skill';
+import { SkillInteractor } from '../valueObjects/skillInteractor';
+import { InteractedCondition } from '../valueObjects/skills/conditions/interactedCondition';
+import { AddHealthEffect } from '../valueObjects/skills/effects/addHealthEffect';
+import { AddMaxSpeedLevelEffect } from '../valueObjects/skills/effects/addMaxSpeedLevelEffect';
+import { FixPleasantEffect } from '../valueObjects/skills/effects/fixPleasantEffect';
+import { ModifyBaseSpeedEffect } from '../valueObjects/skills/effects/modifybaseSpeedEffect';
+import { ModifyDecreaseSpanEffect } from '../valueObjects/skills/effects/modifyDecreaseSpanEffect';
+import { ModifyHealthSpanEffect } from '../valueObjects/skills/effects/modifyHealthSpanEffect';
+import { ModifyMotivationSpanEffect } from '../valueObjects/skills/effects/modifyMotivationSpanEffect';
+import { ModifyPleasntRangeEffect } from '../valueObjects/skills/effects/modifyPleasantRangeEffect';
+import { ModifyTargetHealthSpanEffect } from '../valueObjects/skills/effects/modifyTargetHealthSpanEffect';
+import { Ristriction } from '../valueObjects/skills/ristriction';
+import { AlwaysTiming } from '../valueObjects/skills/timings/alwaysTiming';
+import { ConcentratedTiming } from '../valueObjects/skills/timings/concentratedTiming';
 import { Speed } from '../valueObjects/speed';
 import { Concentrated } from '../valueObjects/status/concentrated';
 import { Exhausted } from '../valueObjects/status/exhausted';
 import { Motivated } from '../valueObjects/status/motivated';
 import { Motivating } from '../valueObjects/status/motivating';
 import { Pleasant } from '../valueObjects/status/pleasant';
+import { ChipCollection, Element, ElementType } from './chip';
 import { Race } from './race';
 
 export class Runner {
@@ -27,7 +43,9 @@ export class Runner {
         private _motivating: Motivating,
         private _concentrated: Concentrated,
         private _pleasant: Pleasant,
-        private _exhausted: Exhausted
+        private _exhausted: Exhausted,
+        private _skills: Map<string, Skill>,
+        private _skillInteractors: Map<ElementType, SkillInteractor> = new Map<ElementType, SkillInteractor>()
     ) {}
 
     get id(): number {
@@ -78,6 +96,18 @@ export class Runner {
         return this._exhausted;
     }
 
+    get skillInteractors(): Map<ElementType, SkillInteractor> {
+        return this._skillInteractors;
+    }
+
+    interactElementSkill(skillName: ElementType): void {
+        const interactor = this._skillInteractors.get(skillName);
+        if (interactor) {
+            interactor.interact();
+            this.motivation.current.value -= interactor.requirements;
+        }
+    }
+
     static create(race: Race, id: number): Runner {
         const health = new Health();
         const speedLevel = new SpeedLevel(health);
@@ -89,18 +119,18 @@ export class Runner {
         const speed = new Speed(baseSpeed, speedLevel);
         const location = new Location(Race.DISTANCE, speed);
         const concentrated = new Concentrated(race, location, health);
-        const exhausted = new Exhausted(health, speedLevel, motivation);
+        const exhausted = new Exhausted(health, speedLevel);
 
         return new Runner(
             id,location, baseSpeed, motivation, speedLevel, health, speed,
-            motivated, motivating, concentrated, pleasant, exhausted
+            motivated, motivating, concentrated, pleasant, exhausted, new Map<string, Skill>()
         );
     }
 
-    static createWithEnhancement(enhancement : Enhancement, race: Race, id: number): Runner {
-        const health = new Health(enhancement.health);
-        const speedLevel = new SpeedLevel(health, enhancement.speedLevel);
-        const motivation = new Motivation(speedLevel, enhancement.motivation);
+    static createWithChips(chips: ChipCollection, race: Race, id: number): Runner {
+        const health = new Health(chips.enhancement.health);
+        const speedLevel = new SpeedLevel(health, chips.enhancement.speedLevel);
+        const motivation = new Motivation(speedLevel, chips.enhancement.motivation);
         const motivated = new Motivated(motivation);
         const motivating = new Motivating(speedLevel, motivation);
         const baseSpeed = new BaseSpeed(true);
@@ -108,12 +138,113 @@ export class Runner {
         const speed = new Speed(baseSpeed, speedLevel);
         const location = new Location(Race.DISTANCE, speed);
         const concentrated = new Concentrated(race, location, health);
-        const exhausted = new Exhausted(health, speedLevel, motivation);
+        const exhausted = new Exhausted(health, speedLevel);
 
-        return new Runner(
+        const runner = new Runner(
             id,location, baseSpeed, motivation, speedLevel, health, speed,
-            motivated, motivating, concentrated, pleasant, exhausted
+            motivated, motivating, concentrated, pleasant, exhausted, new Map<string, Skill>()
         );
+        runner.addElementSkills(chips);
+
+        chips.skills.forEach(skill => {
+            const effects = skill.effects.map(effect => new effect.name(skill.name, runner, effect.parameters));
+            if(!skill.ristriction) {
+                skill.ristriction = RistrictionNames.ristriction;
+            }
+            runner._skills.set(skill.name, new Skill(new skill.condition(runner), new skill.timing(runner), effects, new skill.ristriction(runner)));
+        });
+
+        return runner;
+    }
+
+    addElementSkills(chips: ChipCollection): void {
+        let interactor: SkillInteractor | undefined;
+        if(chips.elementTiers.FIRE > 0){
+            interactor = new SkillInteractor(Element.FIRE, chips.elementTiers.FIRE, this.motivation);
+            this._skills.set(Element.FIRE, new Skill(
+                new InteractedCondition(this, interactor),
+                new ConcentratedTiming(this),
+                [
+                    new ModifyBaseSpeedEffect(Element.FIRE + chips.elementTiers.FIRE, this, [chips.elementTiers.FIRE * 0.02]),
+                    new ModifyDecreaseSpanEffect(Element.FIRE + chips.elementTiers.FIRE, this, [-1]),
+                ],
+                new Ristriction(this)
+            ));
+            this._skillInteractors.set(Element.FIRE, interactor);
+        }
+        if(chips.elementTiers.WATER > 0){
+            interactor = new SkillInteractor(Element.WATER, chips.elementTiers.WATER, this.motivation);
+            this._skills.set(Element.WATER, new Skill(
+                new InteractedCondition(this, interactor),
+                new AlwaysTiming(this),
+                [
+                    new ModifyHealthSpanEffect(Element.WATER + chips.elementTiers.WATER, this, [chips.elementTiers.WATER * 0.05]),
+                ],
+                new Ristriction(this)
+            ));
+            this._skillInteractors.set(Element.WATER, interactor);
+        }
+        if(chips.elementTiers.THUNDER > 0){
+            interactor = new SkillInteractor(Element.THUNDER, chips.elementTiers.THUNDER, this.motivation);
+            this._skills.set(Element.THUNDER, new Skill(
+                new InteractedCondition(this, interactor),
+                new AlwaysTiming(this),
+                [
+                    new AddMaxSpeedLevelEffect(Element.THUNDER + chips.elementTiers.THUNDER, this, [0.1 * chips.elementTiers.THUNDER]),
+                ],
+                new Ristriction(this)
+            ));
+            this._skillInteractors.set(Element.THUNDER, interactor);
+        }
+        if(chips.elementTiers.EARTH > 0){
+            interactor = new SkillInteractor(Element.EARTH, chips.elementTiers.EARTH, this.motivation);
+            this._skills.set(Element.EARTH, new Skill(
+                new InteractedCondition(this, interactor),
+                new AlwaysTiming(this),
+                [
+                    new AddHealthEffect(Element.EARTH + chips.elementTiers.EARTH, this, [chips.elementTiers.EARTH * 1000]),
+                ],
+                new Ristriction(this)
+            ));
+            this._skillInteractors.set(Element.EARTH, interactor);
+        }
+        if(chips.elementTiers.WIND > 0){
+            interactor = new SkillInteractor(Element.WIND, chips.elementTiers.WIND, this.motivation);
+            this._skills.set(Element.WIND, new Skill(
+                new InteractedCondition(this, interactor),
+                new AlwaysTiming(this),
+                [
+                    new FixPleasantEffect(Element.WIND + chips.elementTiers.WIND, this, []),
+                    new ModifyPleasntRangeEffect(Element.WIND + chips.elementTiers.WIND, this, [-1, chips.elementTiers.WIND * 0.2]),
+                ],
+                new Ristriction(this)
+            ));
+            this._skillInteractors.set(Element.WIND, interactor);
+        }
+        if(chips.elementTiers.LIGHT > 0){
+            interactor = new SkillInteractor(Element.LIGHT, chips.elementTiers.LIGHT, this.motivation);
+            this._skills.set(Element.LIGHT, new Skill(
+                new InteractedCondition(this, interactor),
+                new AlwaysTiming(this),
+                [
+                    new ModifyMotivationSpanEffect(Element.LIGHT + chips.elementTiers.LIGHT, this, [chips.elementTiers.LIGHT]),
+                ],
+                new Ristriction(this)
+            ));
+            this._skillInteractors.set(Element.LIGHT, interactor);
+        }
+        if(chips.elementTiers.DARK > 0){
+            interactor = new SkillInteractor(Element.DARK, chips.elementTiers.DARK, this.motivation);
+            this._skills.set(Element.DARK, new Skill(
+                new InteractedCondition(this, interactor),
+                new ConcentratedTiming(this),
+                [
+                    new ModifyTargetHealthSpanEffect(Element.DARK + chips.elementTiers.DARK, this, [chips.elementTiers.DARK * -0.02]),
+                ],
+                new Ristriction(this)
+            ));
+            this._skillInteractors.set(Element.DARK, interactor);
+        }
     }
 
     activate(): void {

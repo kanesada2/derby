@@ -1,7 +1,5 @@
 import { Race } from '../entities/race';
 import { Runner } from '../entities/runner';
-import { Health } from '../valueObjects/parameters/health';
-import { SpeedLevel } from '../valueObjects/parameters/speedLevel';
 
 export class NpcControl {
     private logged: boolean = false;
@@ -10,8 +8,7 @@ export class NpcControl {
     private pleasantPreference: number = 1;
     private concentratePreference: number = 1;
     private appropriatePreference: number = 1;
-    private powerUpTimming: number = 1;
-    private powerUpped: boolean = false;
+    private powerUpRate: number = 0.5;
 
     constructor(
         private runner: Runner,
@@ -26,7 +23,7 @@ export class NpcControl {
         if (pleasantAptitude < 0) {
             this.pleasantPreference *= pleasantAptitude * -100; // 最大で0.2×0.2なのでスケール合わせと、符号がマイナスになるときだけ加算するので
         }
-        this.powerUpTimming = Math.random() * Race.DISTANCE;
+        this.powerUpRate = (Math.random() + Math.random()) / 2;
     }
 
     private adjustWeight(): void {
@@ -45,6 +42,9 @@ export class NpcControl {
         
         const ranRate = this.runner.location.current / this.runner.location.max;
         const rank = this.race.indexOf(this.runner) + 1;
+        if(ranRate > 0.5){
+            this.powerUpRate = 1 - this.powerUpRate; // 前後半で逆転
+        }
         if(ranRate > 0.8){
             this.crawlWeight += (rank - this.race.runners.length) / 5; // 8割を超えたら順位を上げるような動き
         }
@@ -61,13 +61,12 @@ export class NpcControl {
         if (this.crawlWeight > 0) {
             this.runner.crawl();
         }
-        if(!this.powerUpped && this.runner.location.current > this.powerUpTimming) {
-            const healthRate = Math.random();
-            this.runner.health.current.value += Health.MAX_BASE / 4 * healthRate;
-            const speedRate = 1 - healthRate;
-            this.runner.speedLevel.max.value += (SpeedLevel.MAX_BASE - SpeedLevel.MIN) / 4 * speedRate;
-            this.powerUpped = true;
-            console.log(this.runner.id + ' power up! ');
+        if(Math.random() < 0.01) {
+            if(Math.random() < this.powerUpRate) {
+                this.runner.health.current.value += 100;
+            }else{
+                this.runner.speedLevel.max.value += 0.002;
+            }
         }
     }
 

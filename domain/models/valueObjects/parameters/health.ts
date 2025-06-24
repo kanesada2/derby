@@ -49,11 +49,11 @@ export class Health extends Parameter {
         this.emit('change', this._current.value);
     }
 
-    addCrawlSpanModifier(key: string, value: number): void {
-        this.crawlCost.addModifier({key, value});
+    addCrawlSpanMultiplier(key: string, value: number): void {
+        this.crawlCost.addMultiplier({key, value});
     }
 
-    removeCrawlSpanModifier(key: string): void {
-        this.crawlCost.removeModifier(key);
+    removeCrawlSpanMultiplier(key: string): void {
+        this.crawlCost.removeMultiplier(key);
     }
 }

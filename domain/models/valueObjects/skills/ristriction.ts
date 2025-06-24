@@ -1,9 +1,10 @@
-import { EventEmitter } from "events";
+
+import EventEmitter from "react-native/Libraries/vendor/emitter/EventEmitter";
 import { Runner } from "../../entities/runner";
 
 export class Ristriction {
     constructor(
-        private _runner: Runner
+        protected _runner: Runner
     ){}
 
     get target(): EventEmitter {

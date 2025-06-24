@@ -1,12 +1,12 @@
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
-import { Chip, ElementType } from '../entities/chip';
+import { ElementType } from '../entities/chip';
 import { Motivation } from './parameters/motivation';
 
-const REQUIREMENTS_PER_TIER = 1000;
+const REQUIREMENTS_PER_TIER = 3000;
 
-export class ActiveSkillEventEmitter extends EventEmitter {
+export class SkillInteractor extends EventEmitter {
     private _canInteract: boolean = false;
-    private _activated: boolean = false;
+    private _interacted: boolean = false;
 
     constructor(
         private _type: ElementType,
@@ -22,7 +22,6 @@ export class ActiveSkillEventEmitter extends EventEmitter {
                 return;
             }
             this._canInteract = true;
-            this.emit('change');
         });
     }
 
@@ -38,8 +37,8 @@ export class ActiveSkillEventEmitter extends EventEmitter {
     get canInteract(): boolean {
         return this._canInteract;
     }
-    get activated(): boolean {
-        return this._activated;
+    get interacted(): boolean {
+        return this._interacted;
     }
 
     get requirements(): number {
@@ -47,24 +46,10 @@ export class ActiveSkillEventEmitter extends EventEmitter {
     }
 
     interact(): void {
-        if(this._activated || !this._canInteract) {
+        if(this._interacted || !this._canInteract) {
             return;
         }
-        this._activated = true;
+        this._interacted = true;
         this.emit('change');
     }
 }
-
-export class ActiveSkillEventEmitterFactory {
-    static createAll(motivation: Motivation, chips: Chip[]): ActiveSkillEventEmitter[] {
-        let emitters: ActiveSkillEventEmitter[] = [];
-        const chipsByElement =  Map.groupBy(chips, ({ element }) => element);
-        chipsByElement.forEach((chips, element) => {
-            const tier = chips.length / 2; // TODO:Elementごとに指定し直す
-            emitters.push(new ActiveSkillEventEmitter(element, tier, motivation));
-        });
-        return emitters;
-    }
-}
-
-// collection作ってfindByElementする処理いりそう、その場合Factoryは必要ないかも
