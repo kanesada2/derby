@@ -239,7 +239,7 @@ export class Runner {
                 new InteractedCondition(this, interactor),
                 new ConcentratedTiming(this),
                 [
-                    new ModifyTargetHealthSpanEffect(Element.DARK + chips.elementTiers.DARK, this, [chips.elementTiers.DARK * -0.03]),
+                    new ModifyTargetHealthSpanEffect(Element.DARK + chips.elementTiers.DARK, this, [chips.elementTiers.DARK * -0.02]),
                 ],
                 new Ristriction(this)
             ));

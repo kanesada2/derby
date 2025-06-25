@@ -10,7 +10,7 @@ import { ThemedText } from '../../components/ThemedText';
 import { ThemedView } from '../../components/ThemedView';
 import { Chip, ChipCollection, Element, ElementType } from '../../domain/models/entities/chip';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 const maxWidth = Math.min(width, 1024);
 const costLimit = 30;
 
@@ -18,19 +18,19 @@ const costLimit = 30;
 const getElementTooltip = (element: ElementType): string => {
   switch (element) {
     case Element.FIRE:
-      return 'バチバチの間、カケアシレベルが下がらず、スバヤサがレベル×3%上昇する。【1レベル/3個】';
+      return '【FIRE】バチバチの間、カケアシレベルが下がらず、スバヤサがレベル×3%上昇する。【1レベル/3個】';
     case Element.WATER:
-      return 'コンジョーの消費量がレベル×7%減少する。【1レベル/2個】';
+      return '【WATER】コンジョーの消費量がレベル×7%減少する。【1レベル/2個】';
     case Element.WIND:
-      return 'カケアシが最高の時にノリノリになるようになり、ノリノリになる幅がレベル×20%拡大する。【1レベル/4個】';
+      return '【WIND】カケアシが最高の時にノリノリになるようになり、ノリノリになる幅がレベル×20%拡大する。【1レベル/4個】';
     case Element.LIGHT:
-      return 'ドロンの貯まるスピードがレベル×100%増加する。【1レベル/4個】';
+      return '【LIGHT】ドロンの貯まるスピードがレベル×100%増加する。【1レベル/4個】';
     case Element.DARK:
-      return 'バチバチになっている相手のスバヤサがレベル×3%低下する。【1レベル/3個】';
+      return '【DARK】バチバチになっている相手のスバヤサがレベル×2%低下する。【1レベル/3個】';
     case Element.EARTH:
-      return 'コンジョーをレベル×1500回復する。【1レベル/3個】';
+      return '【EARTH】コンジョーをレベル×1500回復する。【1レベル/3個】';
     case Element.THUNDER:
-      return 'カケアシの最大値をレベル×1ガンバリ分増加させる。【1レベル/3個】';
+      return '【THUNDER】カケアシの最大値をレベル×1ガンバリ分増加させる。【1レベル/3個】';
     default:
       return '';
   }
