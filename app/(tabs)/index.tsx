@@ -143,19 +143,19 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   heading: {
-    fontSize: 48,
+    fontSize: 32,
     fontWeight: 'bold',
     marginTop: 24,
     marginBottom: 24,
   },
   subHeading: {
-    fontSize: 32,
+    fontSize: 24,
     fontWeight: 'bold',
     marginTop: 16,
     marginBottom: 16,
   },
   content: {
-    fontSize: 24,
+    fontSize: 16,
     marginBottom: 8,
   },
   imageContainer: {
@@ -165,8 +165,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: 640,
-    height: 1024,
+    width: 320,
+    height: 640,
     justifyContent: 'center',
     alignItems: 'center',
     resizeMode: 'contain',

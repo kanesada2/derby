@@ -17,5 +17,6 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
     platform
   );
 };
+config.resolver.assetExts = [...config.resolver.assetExts, 'ttf', 'otf'];
 
 module.exports = config;
