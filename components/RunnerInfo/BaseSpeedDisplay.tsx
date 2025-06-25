@@ -24,7 +24,7 @@ export function BaseSpeedDisplay({ baseSpeed }: BaseSpeedDisplayProps) {
 
   return (
     <View style={styles.container}>
-      <ThemedText style={styles.label} type="default">アシドリ:</ThemedText>
+      <ThemedText style={styles.label} type="default">スバヤサ:</ThemedText>
       <ThemedText style={styles.value} type="default">
         {value.toFixed(2)}
       </ThemedText>

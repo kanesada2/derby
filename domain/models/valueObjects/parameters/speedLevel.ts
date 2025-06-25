@@ -65,7 +65,7 @@ export class SpeedLevel extends Parameter {
     }
 
     isMotivating(): boolean {
-        return this._motivatingMin <= this._current.value;
+        return this.max.value - this._current.value < SpeedLevel.INCREASE_SPAN;
     }
 
     decreaseClock(): void {
