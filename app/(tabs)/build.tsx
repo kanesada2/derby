@@ -14,6 +14,28 @@ const { width, height } = Dimensions.get('window');
 const maxWidth = Math.min(width, 1024);
 const costLimit = 30;
 
+// 属性別ツールチップテキスト
+const getElementTooltip = (element: ElementType): string => {
+  switch (element) {
+    case Element.FIRE:
+      return 'バチバチの間、カケアシレベルが下がらず、スバヤサがレベル×3%上昇する。【1レベル/3個】';
+    case Element.WATER:
+      return 'コンジョーの消費量がレベル×7%減少する。【1レベル/2個】';
+    case Element.WIND:
+      return 'カケアシが最高の時にノリノリになるようになり、ノリノリになる幅がレベル×20%拡大する。【1レベル/4個】';
+    case Element.LIGHT:
+      return 'ドロンの貯まるスピードがレベル×100%増加する。【1レベル/4個】';
+    case Element.DARK:
+      return 'バチバチになっている相手のスバヤサがレベル×3%低下する。【1レベル/3個】';
+    case Element.EARTH:
+      return 'コンジョーをレベル×1500回復する。【1レベル/3個】';
+    case Element.THUNDER:
+      return 'カケアシの最大値をレベル×1ガンバリ分増加させる。【1レベル/3個】';
+    default:
+      return '';
+  }
+};
+
 // レスポンシブなカラム数を計算
 const getColumnCount = (): number => {
   if (maxWidth >= 800) return 4;
@@ -110,9 +132,10 @@ const ChipItem: React.FC<ChipItemProps> = ({ chip, isSelected, onPress }) => {
 
 interface RunnerStatsProps {
   selectedChips: Chip[];
+  onElementIconPress: (element: ElementType) => void;
 }
 
-const RunnerStats: React.FC<RunnerStatsProps> = ({ selectedChips }) => {
+const RunnerStats: React.FC<RunnerStatsProps> = ({ selectedChips, onElementIconPress }) => {
   // 合計能力を計算
   const totalStats = selectedChips.reduce(
     (acc, chip) => ({
@@ -170,7 +193,11 @@ const RunnerStats: React.FC<RunnerStatsProps> = ({ selectedChips }) => {
       </ThemedText>
       <View style={styles.elementCountsRow}>
         {Object.values(Element).map(element => (
-          <View key={element} style={styles.elementCountItem}>
+          <TouchableOpacity
+            key={element}
+            style={styles.elementCountItem}
+            onPress={() => onElementIconPress(element as ElementType)}
+          >
             <MaterialIcons 
               name={getElementIcon(element as ElementType) as any}
               size={16}
@@ -179,7 +206,7 @@ const RunnerStats: React.FC<RunnerStatsProps> = ({ selectedChips }) => {
             <ThemedText style={styles.elementCountNumber}>
               {elementCounts[element]}
             </ThemedText>
-          </View>
+          </TouchableOpacity>
         ))}
       </View>
     </ThemedView>
@@ -189,6 +216,11 @@ const RunnerStats: React.FC<RunnerStatsProps> = ({ selectedChips }) => {
 export default function BuildScreen() {
   const [mockChips] = useState<Chip[]>(chips);
   const [selectedChips, setSelectedChips] = useState<Chip[]>([]);
+  const [tooltip, setTooltip] = useState<{ visible: boolean; text: string; element: ElementType | null }>({
+    visible: false,
+    text: '',
+    element: null
+  });
   const { setChips } = useChips();
   const columnCount = getColumnCount();
 
@@ -197,6 +229,23 @@ export default function BuildScreen() {
     setChips(new ChipCollection(selectedChips));
 
   }, [selectedChips, setChips]);
+
+  const handleElementIconPress = (element: ElementType) => {
+    const tooltipText = getElementTooltip(element);
+    setTooltip({
+      visible: true,
+      text: tooltipText,
+      element: element
+    });
+  };
+
+  const hideTooltip = () => {
+    setTooltip({
+      visible: false,
+      text: '',
+      element: null
+    });
+  };
 
   const handleChipPress = (chip: Chip) => {
     const isAlreadySelected = selectedChips.some(selected => selected.id === chip.id);
@@ -248,9 +297,9 @@ export default function BuildScreen() {
                         onPress={() => handleChipPress(chip)}
                       >
                         <View style={styles.selectedChipIconContainer}>
-                          {chip.element.map((element, index) => (
+                          {chip.element.map((element, elementIndex) => (
                             <MaterialIcons
-                              key={index}
+                              key={elementIndex}
                               name={getElementIcon(element) as any}
                               size={16}
                               color={getElementColor(element)}
@@ -276,8 +325,24 @@ export default function BuildScreen() {
           </ThemedView>
           
           {/* ランナー能力（右側） */}
-          <RunnerStats selectedChips={selectedChips} />
+          <RunnerStats selectedChips={selectedChips} onElementIconPress={handleElementIconPress} />
         </View>
+
+        {/* ツールチップ表示領域 */}
+        {tooltip.visible && (
+          <TouchableOpacity 
+            style={styles.tooltipContainer}
+            onPress={hideTooltip}
+            activeOpacity={1}
+          >
+            <ThemedView style={styles.tooltipBox}>
+              <ThemedText style={styles.tooltipText}>
+                {tooltip.text}
+              </ThemedText>
+            </ThemedView>
+          </TouchableOpacity>
+        )}
+
         {/* チップ一覧（グリッド表示） */}
         <View style={styles.chipListContainer}>
           <ScrollView style={styles.chipList} showsVerticalScrollIndicator={false}>
@@ -519,5 +584,34 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: 'bold',
     marginTop: 1,
+  },
+  tooltipContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1001,
+  },
+  tooltipBox: {
+    backgroundColor: '#333333',
+    borderRadius: 8,
+    padding: 16,
+    maxWidth: '90%',
+    minWidth: 200,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  tooltipText: {
+    fontSize: 12,
+    color: '#FFFFFF',
+    textAlign: 'center',
+    lineHeight: 18,
   },
 });

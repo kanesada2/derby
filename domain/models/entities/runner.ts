@@ -165,7 +165,7 @@ export class Runner {
                 new InteractedCondition(this, interactor),
                 new ConcentratedTiming(this),
                 [
-                    new ModifyBaseSpeedEffect(Element.FIRE + chips.elementTiers.FIRE, this, [chips.elementTiers.FIRE * 0.02]),
+                    new ModifyBaseSpeedEffect(Element.FIRE + chips.elementTiers.FIRE, this, [chips.elementTiers.FIRE * 0.03]),
                     new ModifyDecreaseSpanEffect(Element.FIRE + chips.elementTiers.FIRE, this, [-1]),
                 ],
                 new Ristriction(this)
@@ -178,7 +178,7 @@ export class Runner {
                 new InteractedCondition(this, interactor),
                 new AlwaysTiming(this),
                 [
-                    new ModifyHealthSpanEffect(Element.WATER + chips.elementTiers.WATER, this, [chips.elementTiers.WATER * 0.05]),
+                    new ModifyHealthSpanEffect(Element.WATER + chips.elementTiers.WATER, this, [chips.elementTiers.WATER * 0.07]),
                 ],
                 new Ristriction(this)
             ));
@@ -202,7 +202,7 @@ export class Runner {
                 new InteractedCondition(this, interactor),
                 new AlwaysTiming(this),
                 [
-                    new AddHealthEffect(Element.EARTH + chips.elementTiers.EARTH, this, [chips.elementTiers.EARTH * 1000]),
+                    new AddHealthEffect(Element.EARTH + chips.elementTiers.EARTH, this, [chips.elementTiers.EARTH * 1500]),
                 ],
                 new Ristriction(this)
             ));
@@ -239,7 +239,7 @@ export class Runner {
                 new InteractedCondition(this, interactor),
                 new ConcentratedTiming(this),
                 [
-                    new ModifyTargetHealthSpanEffect(Element.DARK + chips.elementTiers.DARK, this, [chips.elementTiers.DARK * -0.02]),
+                    new ModifyTargetHealthSpanEffect(Element.DARK + chips.elementTiers.DARK, this, [chips.elementTiers.DARK * -0.03]),
                 ],
                 new Ristriction(this)
             ));

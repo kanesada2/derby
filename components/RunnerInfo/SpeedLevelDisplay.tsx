@@ -9,11 +9,12 @@ interface SpeedLevelDisplayProps {
 
 export function SpeedLevelDisplay({ speedLevel }: SpeedLevelDisplayProps) {
   const [current, setCurrent] = useState(speedLevel.current.value);
-  const max = speedLevel.max.value;
+  const [max, setMax] = useState(speedLevel.max.value);
 
   useEffect(() => {
     const handleChange = (value: number) => {
       setCurrent(value);
+      setMax(speedLevel.max.value);
     };
 
     speedLevel.addListener('change', handleChange);
