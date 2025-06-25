@@ -5,7 +5,6 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 
 export default function RaceScreen() {
-
   return (
     <ThemedView style={styles.container}>
       <ThemedText style={styles.title} type="title">レース画面</ThemedText>
