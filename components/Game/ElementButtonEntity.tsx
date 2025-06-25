@@ -1,7 +1,7 @@
 import { Element, ElementType } from '@/domain/models/entities/chip';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import MaterialIcons from '../../constants/MaterialIcons';
 import { ThemedText } from '../ThemedText';
 
 // StyleSheetを使用して型安全なスタイルを定義

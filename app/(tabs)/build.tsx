@@ -3,11 +3,11 @@ import { useChips } from '@/contexts/ChipsContext';
 import { Health } from '@/domain/models/valueObjects/parameters/health';
 import { Motivation } from '@/domain/models/valueObjects/parameters/motivation';
 import { SpeedLevel } from '@/domain/models/valueObjects/parameters/speedLevel';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import React, { useEffect, useState } from 'react';
 import { Alert, Dimensions, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ThemedText } from '../../components/ThemedText';
 import { ThemedView } from '../../components/ThemedView';
+import MaterialIcons from '../../constants/MaterialIcons';
 import { Chip, ChipCollection, Element, ElementType } from '../../domain/models/entities/chip';
 
 const { width } = Dimensions.get('window');

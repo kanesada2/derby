@@ -61,7 +61,7 @@ export class NpcControl {
         if (this.crawlWeight > 0) {
             this.runner.crawl();
         }
-        if(Math.random() < 0.01) {
+        if(Math.random() < 0.015) {
             if(Math.random() < this.powerUpRate) {
                 this.runner.health.current.value += 100;
             }else{
