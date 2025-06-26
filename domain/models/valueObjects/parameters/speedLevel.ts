@@ -17,6 +17,7 @@ export class SpeedLevel extends Parameter {
     pleasantMax: Modifiable = new Modifiable(1);
     private _motivatingMin: number = 1;
     private _exhausted: boolean = false;
+    private _lastSpeedLv: number = 1;
 
     private _decreaseSpan: Modifiable;
 
@@ -104,6 +105,7 @@ export class SpeedLevel extends Parameter {
     }   
 
     fixByExhausted(): void {
+        this._lastSpeedLv = this._current.value;
         this._current.value = SpeedLevel.EXHAUSTED_BASE;
         this._exhausted = true;
         this.emit('change', this._current.value);
@@ -111,7 +113,7 @@ export class SpeedLevel extends Parameter {
 
     unfixByExhausted(): void {
         this._exhausted = false;
-        this._current.value = SpeedLevel.MIN;
+        this._current.value = this._lastSpeedLv;
         this.emit('change', this._current.value);
     }
     addMaxMultiplier(key: string, value: number): void {

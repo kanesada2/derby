@@ -72,7 +72,7 @@ export default function HomeScreen() {
           その他
         </ThemedText>
         <ThemedText style={styles.content}>
-          ガンバリ: レース画面をタップして加速すること。タップ一回分を「1ガンバリ」という。
+          ガンバリ: レース画面をタップして加速すること。タップ一回分を「1ガンバリ」という。通常、ガンバリ時にも一定量のコンジョーを消費しますが、バチバチ状態のときのみ消費しなくなります。
         </ThemedText>
         <ThemedText style={styles.heading}>
           画面
