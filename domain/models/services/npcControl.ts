@@ -65,7 +65,7 @@ export class NpcControl {
             if(Math.random() < this.powerUpRate) {
                 this.runner.health.current.value += 100;
             }else{
-                this.runner.speedLevel.max.value += 0.002;
+                this.runner.speedLevel.max.value += 0.0015;
             }
         }
     }

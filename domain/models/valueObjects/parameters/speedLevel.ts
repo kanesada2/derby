@@ -60,12 +60,16 @@ export class SpeedLevel extends Parameter {
         this.pleasantMin = new Modifiable(this.pleasantMax.value - SpeedLevel.INCREASE_SPAN);
     }
 
+    private updateMotivatingMin(): void {
+        this._motivatingMin = this._max.value - SpeedLevel.INCREASE_SPAN;
+    }
+
     isPleasant(): boolean {
         return this.pleasantMin.value <= this._current.value && this._current.value <= this.pleasantMax.value;
     }
 
     isMotivating(): boolean {
-        return this.max.value - this._current.value < SpeedLevel.INCREASE_SPAN;
+        return this._current.value >= this._motivatingMin;
     }
 
     decreaseClock(): void {
@@ -109,6 +113,25 @@ export class SpeedLevel extends Parameter {
         this._exhausted = false;
         this._current.value = SpeedLevel.MIN;
         this.emit('change', this._current.value);
+    }
+    addMaxMultiplier(key: string, value: number): void {
+        super.addMaxMultiplier(key, value);
+        this.updateMotivatingMin();
+    }
+
+    removeMaxMultiplier(key: string): void {
+        super.removeMaxMultiplier(key);
+        this.updateMotivatingMin();
+    }
+
+    addMaxOffset(key: string, value: number): void {
+        this._max.addOffset({key, value});
+        this.updateMotivatingMin();
+    }
+
+    removeMaxOffset(key: string): void {
+        this._max.removeOffset(key);
+        this.updateMotivatingMin();
     }
 
     addDecreaseSpanMultiplier(key: string, value: number): void {
