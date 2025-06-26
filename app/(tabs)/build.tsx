@@ -20,7 +20,7 @@ const getElementTooltip = (element: ElementType): string => {
     case Element.FIRE:
       return '【FIRE】バチバチの間、カケアシレベルが下がらず、スバヤサがレベル×3%上昇する。【1レベル/3個】';
     case Element.WATER:
-      return '【WATER】コンジョーの消費量がレベル×7%減少する。【1レベル/2個】';
+      return '【WATER】コンジョーの消費量がレベル×5%減少する。【1レベル/2個】';
     case Element.WIND:
       return '【WIND】カケアシが最高の時にノリノリになるようになり、ノリノリになる幅がレベル×20%拡大する。【1レベル/4個】';
     case Element.LIGHT:
@@ -28,7 +28,7 @@ const getElementTooltip = (element: ElementType): string => {
     case Element.DARK:
       return '【DARK】バチバチになっている相手のスバヤサがレベル×2%低下する。【1レベル/3個】';
     case Element.EARTH:
-      return '【EARTH】コンジョーをレベル×1500回復する。【1レベル/3個】';
+      return '【EARTH】コンジョーをレベル×750回復する。【1レベル/3個】';
     case Element.THUNDER:
       return '【THUNDER】カケアシの最大値をレベル×1ガンバリ分増加させる。【1レベル/3個】';
     default:

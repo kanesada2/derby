@@ -327,11 +327,11 @@ export const chips: Chip[] = [
         timing: TimingNames.skillInteracted,
         effects: [{
           name: EffectNames.addMotivation,
-          parameters: [3000],
+          parameters: [1500],
         }]
       }
     ],
-    '最初のヨウジュツ発動時、ドロンゲージを1本回復'
+    '最初のヨウジュツ発動時、ドロンゲージを0.5本回復'
   ),
   new Chip(
     'ikazuchi',

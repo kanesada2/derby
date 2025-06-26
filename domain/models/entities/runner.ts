@@ -178,7 +178,7 @@ export class Runner {
                 new InteractedCondition(this, interactor),
                 new AlwaysTiming(this),
                 [
-                    new ModifyHealthSpanEffect(Element.WATER + chips.elementTiers.WATER, this, [chips.elementTiers.WATER * 0.07]),
+                    new ModifyHealthSpanEffect(Element.WATER + chips.elementTiers.WATER, this, [chips.elementTiers.WATER * 0.05]),
                 ],
                 new Ristriction(this)
             ));
@@ -202,7 +202,7 @@ export class Runner {
                 new InteractedCondition(this, interactor),
                 new AlwaysTiming(this),
                 [
-                    new AddHealthEffect(Element.EARTH + chips.elementTiers.EARTH, this, [chips.elementTiers.EARTH * 1500]),
+                    new AddHealthEffect(Element.EARTH + chips.elementTiers.EARTH, this, [chips.elementTiers.EARTH * 750]),
                 ],
                 new Ristriction(this)
             ));
