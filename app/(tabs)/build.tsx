@@ -390,7 +390,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    height: 240,
+    height: 300,
     flexDirection: 'row',
     zIndex: 1000,
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
@@ -399,7 +399,7 @@ const styles = StyleSheet.create({
   },
   chipListContainer: {
     flex: 1,
-    paddingTop: 240, // overlayの高さ分のパディング
+    paddingTop: 300, // overlayの高さ分のパディング
   },
   chipList: {
     flex: 1,
@@ -479,7 +479,7 @@ const styles = StyleSheet.create({
     padding: 12,
     elevation: 4,
     width: '50%',
-    maxHeight: 240,
+    maxHeight: 300,
     overflow: 'scroll',    
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
