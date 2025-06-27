@@ -19,6 +19,7 @@ import { ModifyPleasntRangeEffect } from "@/domain/models/valueObjects/skills/ef
 import { ModifyTargetBaseSpeedEffect } from "@/domain/models/valueObjects/skills/effects/modifyTargetBaseSpeedEffect";
 import { ModifyTargetHealthSpanEffect } from "@/domain/models/valueObjects/skills/effects/modifyTargetHealthSpanEffect";
 import { ModifyTargetSpeedLevelEffect } from "@/domain/models/valueObjects/skills/effects/modifyTargetSpeedLevelEffect";
+import { MovePleasntRangeEffect } from "@/domain/models/valueObjects/skills/effects/movePleasantRangeEffect";
 import { Ristriction } from "@/domain/models/valueObjects/skills/ristriction";
 import { NeverRistrict } from "@/domain/models/valueObjects/skills/ristrictions/neverRistrict";
 import { AlwaysTiming } from "@/domain/models/valueObjects/skills/timings/alwaysTiming";
@@ -94,7 +95,8 @@ export const EffectNames = {
     "addHealth": AddHealthEffect,
     "addTargetMaxSpeedLevel": AddTargetMaxSpeedLevelEffect,
     "fixPleasant": FixPleasantEffect,
-    "fixSpeedLevelToMaxRate": FixSpeedLevelToMaxRateEffect
+    "fixSpeedLevelToMaxRate": FixSpeedLevelToMaxRateEffect,
+    "movePleasantRange": MovePleasntRangeEffect,
 } as const;
 
 export const RistrictionNames = {

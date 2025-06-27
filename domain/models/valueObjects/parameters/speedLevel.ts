@@ -9,19 +9,21 @@ export class SpeedLevel extends Parameter {
     static readonly MAX_AMPLIFIER_MAX = 0.4;
     static readonly INCREASE_SPAN = 0.1;
     static readonly DECRASE_TICKS = 300;
-    static readonly PLEASANT_MAX_MIN = 1.2;
+    static readonly PLEASANT_MAX_MIN = 1.1;
     static readonly EXHAUSTED_BASE = 0.5;
     static readonly MODIFIER_KEY = 'speedLevel';
+    static readonly DEFAULT_PLEASANT_DIFF = 0.1
 
     pleasantMin: Modifiable = new Modifiable(1);
     pleasantMax: Modifiable = new Modifiable(1);
+
     private _motivatingMin: number = 1;
     private _exhausted: boolean = false;
     private _lastSpeedLv: number = 1;
 
     private _decreaseSpan: Modifiable;
 
-    constructor(private health:Health, enhancement: number|null = null) {
+    constructor(private health:Health, enhancement: number[]|null = null) {
         super(SpeedLevel.MAX_MAX, SpeedLevel.MIN, SpeedLevel.INCREASE_SPAN);
         this.determineParameters(enhancement);
         this._decreaseSpan = new Modifiable(this._span.value / SpeedLevel.DECRASE_TICKS);
@@ -39,12 +41,22 @@ export class SpeedLevel extends Parameter {
         return (SpeedLevel.MAX_BASE - SpeedLevel.MIN) * (1 + enhancement / 100) + SpeedLevel.MIN;
     }
 
-    private determineParameters(enhancement: number|null): void {
+    static calculatePleasantMinWithEnhancement(enhancement: number): number {
+        return SpeedLevel.DEFAULT_PLEASANT_DIFF * (1 + enhancement / 100) + SpeedLevel.MIN;
+    }
+
+    private determineParameters(enhancement: number[]|null): void {
         if(enhancement !== null) {
-            this._max = new Modifiable(SpeedLevel.calculateMaxWithEnhancement(enhancement));
+            this._max = new Modifiable(SpeedLevel.calculateMaxWithEnhancement(enhancement[0]));
+            this.pleasantMin = new Modifiable(SpeedLevel.calculatePleasantMinWithEnhancement(enhancement[1]));
+            this.pleasantMax = new Modifiable(this.pleasantMin.value + SpeedLevel.INCREASE_SPAN);
         } else {
             const lotCountBase = 10;
             const lotList: number[] = [];
+
+            const randomizer = (this._max.value - SpeedLevel.INCREASE_SPAN - SpeedLevel.PLEASANT_MAX_MIN) * Math.random();
+            this.pleasantMax = new Modifiable(SpeedLevel.PLEASANT_MAX_MIN + randomizer);
+            this.pleasantMin = new Modifiable(this.pleasantMax.value - SpeedLevel.INCREASE_SPAN);
             
             for (let i = 0; i < lotCountBase; i++) {
                 lotList.push(Math.random());
@@ -55,10 +67,6 @@ export class SpeedLevel extends Parameter {
             this._max = new Modifiable(SpeedLevel.MAX_BASE + SpeedLevel.MAX_AMPLIFIER_MAX * lotList[lotCountBase - 1]);
         }
         this._motivatingMin = this._max.value - SpeedLevel.INCREASE_SPAN;
-        
-        const randomizer = (this._motivatingMin - SpeedLevel.PLEASANT_MAX_MIN) * Math.random();
-        this.pleasantMax = new Modifiable(SpeedLevel.PLEASANT_MAX_MIN + randomizer);
-        this.pleasantMin = new Modifiable(this.pleasantMax.value - SpeedLevel.INCREASE_SPAN);
     }
 
     private updateMotivatingMin(): void {

@@ -129,7 +129,7 @@ export class Runner {
 
     static createWithChips(chips: ChipCollection, race: Race, id: number): Runner {
         const health = new Health(chips.enhancement.health);
-        const speedLevel = new SpeedLevel(health, chips.enhancement.speedLevel);
+        const speedLevel = new SpeedLevel(health, [chips.enhancement.speedLevel, chips.enhancement.pleasantDiff]);
         const motivation = new Motivation(speedLevel, chips.enhancement.motivation);
         const motivated = new Motivated(motivation);
         const motivating = new Motivating(speedLevel, motivation);

@@ -3,6 +3,7 @@ import EventEmitter from "react-native/Libraries/vendor/emitter/EventEmitter";
 import { Timing } from "../timing";
 
 export class SkillInteractedTiming extends Timing {
+    public repeatable = true;
     constructor(
         protected runner: Runner,
     ) {

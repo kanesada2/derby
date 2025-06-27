@@ -32,7 +32,7 @@ export const chips: Chip[] = [
     'ホノオ',
     2,
     parseElements('火'),
-    new Enhancement(1, 4, 2),
+    new Enhancement(1, 4, 2, -3),
     [], // スキルは後で実装
     ''
   ),
@@ -41,7 +41,7 @@ export const chips: Chip[] = [
     'ホムラ',
     3,
     parseElements('火'),
-    new Enhancement(6, 3, 2),
+    new Enhancement(6, 3, 2, -4),
     [
       {
         name: SkillNames.homura,
@@ -64,7 +64,7 @@ export const chips: Chip[] = [
     'ヒノタマ',
     1,
     parseElements('火'),
-    new Enhancement(0, 3, 1),
+    new Enhancement(0, 3, 1, -4),
     [],
     ''
   ),
@@ -73,7 +73,7 @@ export const chips: Chip[] = [
     'ゴウカ',
     3,
     parseElements('火'),
-    new Enhancement(3, 5, 3),
+    new Enhancement(3, 5, 3, -12),
     [{
       name: SkillNames.gouka,
       condition: ConditionNames.always,
@@ -90,7 +90,7 @@ export const chips: Chip[] = [
     'ユケムリ',
     1,
     parseElements('火', '水'),
-    new Enhancement(2, 0, 1),
+    new Enhancement(2, 0, 1, 6),
     [],
     ''
   ),
@@ -99,7 +99,7 @@ export const chips: Chip[] = [
     'ヒバナ',
     1,
     parseElements('火', '雷'),
-    new Enhancement(0, 3, 0),
+    new Enhancement(0, 3, 0, -5),
     [],
     ''
   ),
@@ -108,7 +108,7 @@ export const chips: Chip[] = [
     'トビヒ',
     1,
     parseElements('火', '風'),
-    new Enhancement(0, 1, 2),
+    new Enhancement(0, 1, 2, 4),
     [],
     ''
   ),
@@ -117,7 +117,7 @@ export const chips: Chip[] = [
     'マグマ',
     3,
     parseElements('火', '土'),
-    new Enhancement(3, 4, 1),
+    new Enhancement(3, 4, 1, 3),
     [{
       name: SkillNames.magma,
       condition: ConditionNames.always,
@@ -134,7 +134,7 @@ export const chips: Chip[] = [
     'リョウゲン',
     2,
     parseElements('火', '土'),
-    new Enhancement(0, 3, 2),
+    new Enhancement(0, 3, 2, -5),
     [],
     ''
   ),
@@ -143,7 +143,7 @@ export const chips: Chip[] = [
     'トモシビ',
     1,
     parseElements('火', '光'),
-    new Enhancement(1, 1, 1),
+    new Enhancement(1, 1, 1, 2),
     [],
     ''
   ),
@@ -152,7 +152,7 @@ export const chips: Chip[] = [
     'タイヨウ',
     3,
     parseElements('火', '光'),
-    new Enhancement(5, 0, 3),
+    new Enhancement(5, 0, 3, 7),
     [
       {
         name: SkillNames.taiyou,
@@ -171,7 +171,7 @@ export const chips: Chip[] = [
     'オニビ',
     2,
     parseElements('火', '闇'),
-    new Enhancement(0, 2, 3),
+    new Enhancement(0, 2, 3, -8),
     [],
     ''
   ),
@@ -180,7 +180,7 @@ export const chips: Chip[] = [
     'レンゴク',
     4,
     parseElements('火', '闇'),
-    new Enhancement(2, 9, 2),
+    new Enhancement(2, 9, 2, -10),
     [
       {
         name: SkillNames.rengoku,
@@ -199,7 +199,7 @@ export const chips: Chip[] = [
     'シズク',
     1,
     parseElements('水'),
-    new Enhancement(0, 0, 4),
+    new Enhancement(0, 0, 4, 7),
     [],
     ''
   ),
@@ -208,7 +208,7 @@ export const chips: Chip[] = [
     'ウルオイ',
     1,
     parseElements('水'),
-    new Enhancement(4, 0, 0),
+    new Enhancement(4, 0, 0, 9),
     [],
     ''
   ),
@@ -217,7 +217,7 @@ export const chips: Chip[] = [
     'ウナバラ',
     3,
     parseElements('水'),
-    new Enhancement(7, 0, 4),
+    new Enhancement(7, 0, 4, 2),
     [
       {
         name: SkillNames.unabara,
@@ -236,7 +236,7 @@ export const chips: Chip[] = [
     'ゲキリュウ',
     3,
     parseElements('水'),
-    new Enhancement(0, 7, 4),
+    new Enhancement(0, 7, 4, 5),
     [
       {
         name: SkillNames.gekiryuu,
@@ -255,7 +255,7 @@ export const chips: Chip[] = [
     'ライウ',
     2,
     parseElements('水', '雷'),
-    new Enhancement(2, 2, 1),
+    new Enhancement(2, 2, 1, 1),
     [],
     ''
   ),
@@ -264,7 +264,7 @@ export const chips: Chip[] = [
     'アラシ',
     2,
     parseElements('水', '風'),
-    new Enhancement(0, 3, 2),
+    new Enhancement(0, 3, 2, -2),
     [],
     ''
   ),
@@ -273,7 +273,7 @@ export const chips: Chip[] = [
     'ウンカイ',
     1,
     parseElements('水', '風'),
-    new Enhancement(2, 0, 1),
+    new Enhancement(2, 0, 1, 4),
     [],
     ''
   ),
@@ -282,7 +282,7 @@ export const chips: Chip[] = [
     'セイメイ',
     3,
     parseElements('水', '土'),
-    new Enhancement(4, 0, 4),
+    new Enhancement(4, 0, 4, 0),
     [
       {
         name: SkillNames.seimei,
@@ -294,14 +294,14 @@ export const chips: Chip[] = [
         }]
       }
     ],
-    'ノリノリになる幅が5%増加'
+    'ノリノリゾーンの幅が5%増加'
   ),
   new Chip(
     'minasoko',
     'ミナソコ',
     1,
     parseElements('水', '闇'),
-    new Enhancement(1, 0, 2),
+    new Enhancement(1, 0, 2, 3),
     [],
     ''
   ),
@@ -310,7 +310,7 @@ export const chips: Chip[] = [
     'セイリュウ',
     2,
     parseElements('水', '光'),
-    new Enhancement(1, 3, 1),
+    new Enhancement(1, 3, 1, -4),
     [],
     ''
   ),
@@ -319,7 +319,7 @@ export const chips: Chip[] = [
     'ワダツミ',
     4,
     parseElements('水', '光'),
-    new Enhancement(7, 4, 2),
+    new Enhancement(7, 4, 2, 9),
     [
       {
         name: SkillNames.wadatsumi,
@@ -338,7 +338,7 @@ export const chips: Chip[] = [
     'イカヅチ',
     2,
     parseElements('雷'),
-    new Enhancement(0, 5, 2),
+    new Enhancement(0, 5, 2, -5),
     [],
     ''
   ),
@@ -347,44 +347,7 @@ export const chips: Chip[] = [
     'ヘキレキ',
     3,
     parseElements('雷'),
-    new Enhancement(4, 7, 4),
-    [
-      {
-        name: SkillNames.hekireki,
-        condition: ConditionNames.always,
-        timing: TimingNames.skillInteracted,
-        effects: [{
-          name: EffectNames.fixSpeedLevelToMaxRate,
-          parameters: [1],
-        }]
-      }
-    ],
-    'ヨウジュツを発動した時、カケアシを最大レベルまで上げる'
-  ),
-  new Chip(
-    'raimei',
-    'ライメイ',
-    1,
-    parseElements('雷'),
-    new Enhancement(0, 3, 1),
-    [],
-    ''
-  ),
-  new Chip(
-    'dengeki',
-    'デンゲキ',
-    1,
-    parseElements('雷'),
-    new Enhancement(0, 1, 3),
-    [],
-    ''
-  ),
-  new Chip(
-    'raiden',
-    'ライデン',
-    3,
-    parseElements('雷'),
-    new Enhancement(6, 5, 0),
+    new Enhancement(2, 7, 2, -8),
     [
       {
         name: SkillNames.raiden,
@@ -399,11 +362,48 @@ export const chips: Chip[] = [
     'バチバチの間だけ、カケアシの最大値が1ガンバリ分増加する'
   ),
   new Chip(
+    'raimei',
+    'ライメイ',
+    1,
+    parseElements('雷'),
+    new Enhancement(0, 3, 1, -3),
+    [],
+    ''
+  ),
+  new Chip(
+    'dengeki',
+    'デンゲキ',
+    1,
+    parseElements('雷'),
+    new Enhancement(0, 1, 3, 3),
+    [],
+    ''
+  ),
+  new Chip(
+    'raiden',
+    'ライデン',
+    3,
+    parseElements('雷'),
+    new Enhancement(6, 5, 0, -10),
+    [
+      {
+        name: SkillNames.hekireki,
+        condition: ConditionNames.always,
+        timing: TimingNames.skillInteracted,
+        effects: [{
+          name: EffectNames.movePleasantRange,
+          parameters: [0.01],
+        }]
+      }
+    ],
+    'ヨウジュツを発動するたび、ノリノリゾーンが0.1ガンバリ分上がる'
+  ),
+  new Chip(
     'shippuu',
     'シップウ',
     3,
     parseElements('風'),
-    new Enhancement(4, 7, 0),
+    new Enhancement(4, 7, 0, 4),
     [
       {
         name: SkillNames.shippuu,
@@ -422,7 +422,7 @@ export const chips: Chip[] = [
     'ジンライ',
     3,
     parseElements('雷'),
-    new Enhancement(4, 0, 7),
+    new Enhancement(4, 0, 7, -5),
     [
       {
         name: SkillNames.jinrai,
@@ -441,7 +441,7 @@ export const chips: Chip[] = [
     'オーロラ',
     3,
     parseElements('雷', '風'),
-    new Enhancement(4, 0, 4),
+    new Enhancement(4, 0, 4, 9),
     [
       {
         name: SkillNames.aurora,
@@ -461,7 +461,7 @@ export const chips: Chip[] = [
     'イナヅマ',
     2,
     parseElements('雷', '土'),
-    new Enhancement(0, 5, 0),
+    new Enhancement(0, 5, 0, -4),
     [],
     ''
   ),
@@ -470,7 +470,7 @@ export const chips: Chip[] = [
     'シデン',
     2,
     parseElements('雷', '闇'),
-    new Enhancement(2, 0, 3),
+    new Enhancement(2, 0, 3, 5),
     [],
     ''
   ),
@@ -479,7 +479,7 @@ export const chips: Chip[] = [
     'ライジン',
     4,
     parseElements('雷', '光'),
-    new Enhancement(3, 7, 3),
+    new Enhancement(3, 7, 3, 8),
     [
       {
         name: SkillNames.raijin,
@@ -498,7 +498,7 @@ export const chips: Chip[] = [
     'オイカゼ',
     1,
     parseElements('風'),
-    new Enhancement(0, 2, 2),
+    new Enhancement(0, 2, 2, -3),
     [],
     ''
   ),
@@ -507,7 +507,7 @@ export const chips: Chip[] = [
     'イブキ',
     1,
     parseElements('風'),
-    new Enhancement(1, 0, 3),
+    new Enhancement(1, 0, 3, 2),
     [],
     ''
   ),
@@ -516,7 +516,7 @@ export const chips: Chip[] = [
     'トップウ',
     2,
     parseElements('風'),
-    new Enhancement(0, 4, 3),
+    new Enhancement(0, 4, 3, -4),
     [],
     ''
   ),
@@ -525,7 +525,7 @@ export const chips: Chip[] = [
     'タツマキ',
     2,
     parseElements('風'),
-    new Enhancement(2, 3, 2),
+    new Enhancement(2, 3, 2, 2),
     [],
     ''
   ),
@@ -534,7 +534,7 @@ export const chips: Chip[] = [
     'ヤマオロシ',
     2,
     parseElements('風', '土'),
-    new Enhancement(4, 1, 0),
+    new Enhancement(4, 1, 0, 5),
     [],
     ''
   ),
@@ -543,7 +543,7 @@ export const chips: Chip[] = [
     'ダイシゼン',
     4,
     parseElements('風', '土'),
-    new Enhancement(8, 0, 5),
+    new Enhancement(8, 0, 5, 10),
     [
       {
         name: SkillNames.daishizen,
@@ -566,7 +566,7 @@ export const chips: Chip[] = [
     'アカツキ',
     3,
     parseElements('風', '光'),
-    new Enhancement(5, 0, 3),
+    new Enhancement(5, 0, 3, -3),
     [
       {
         name: SkillNames.akatsuki,
@@ -585,7 +585,7 @@ export const chips: Chip[] = [
     'タソガレ',
     3,
     parseElements('風', '闇'),
-    new Enhancement(0, 5, 3),
+    new Enhancement(0, 5, 3, 3),
     [
       {
         name: SkillNames.tasogare,
@@ -604,7 +604,7 @@ export const chips: Chip[] = [
     'ダイチ',
     3,
     parseElements('土'),
-    new Enhancement(9, 0, 2),
+    new Enhancement(9, 0, 2, 5),
     [
       {
         name: SkillNames.daichi,
@@ -623,7 +623,7 @@ export const chips: Chip[] = [
     'メブキ',
     1,
     parseElements('土'),
-    new Enhancement(2, 0, 2),
+    new Enhancement(2, 0, 2, 3),
     [],
     ''
   ),
@@ -632,7 +632,7 @@ export const chips: Chip[] = [
     'シンリョク',
     2,
     parseElements('土'),
-    new Enhancement(4, 0, 3),
+    new Enhancement(4, 0, 3, 6),
     [],
     ''
   ),
@@ -641,7 +641,7 @@ export const chips: Chip[] = [
     'ハチク',
     1,
     parseElements('土'),
-    new Enhancement(0, 0, 4),
+    new Enhancement(0, 0, 4, -5),
     [],
     ''
   ),
@@ -650,7 +650,7 @@ export const chips: Chip[] = [
     'コノハ',
     1,
     parseElements('土'),
-    new Enhancement(3, 1, 0),
+    new Enhancement(3, 1, 0, 6),
     [],
     ''
   ),
@@ -659,7 +659,7 @@ export const chips: Chip[] = [
     'モノノケ',
     2,
     parseElements('土', '闇'),
-    new Enhancement(0, 2, 3),
+    new Enhancement(0, 2, 3, 5),
     [],
     ''
   ),
@@ -668,7 +668,7 @@ export const chips: Chip[] = [
     'コンゴウ',
     3,
     parseElements('土', '光'),
-    new Enhancement(6, 0, 2),
+    new Enhancement(6, 0, 2, 7),
     [
       {
         name: SkillNames.kongou,
@@ -687,7 +687,7 @@ export const chips: Chip[] = [
     'シノビ',
     1,
     parseElements('闇'),
-    new Enhancement(0, 3, 1),
+    new Enhancement(0, 3, 1, -6),
     [],
     ''
   ),
@@ -696,7 +696,7 @@ export const chips: Chip[] = [
     'クラヤミ',
     2,
     parseElements('闇'),
-    new Enhancement(3, 2, 2),
+    new Enhancement(3, 2, 2, 6),
     [],
     ''
   ),
@@ -705,7 +705,7 @@ export const chips: Chip[] = [
     'アンコク',
     3,
     parseElements('闇'),
-    new Enhancement(4, 2, 5),
+    new Enhancement(4, 2, 5, 5),
     [
       {
             name: SkillNames.ankoku,
@@ -724,7 +724,7 @@ export const chips: Chip[] = [
     'カゲボウシ',
     1,
     parseElements('闇'),
-    new Enhancement(0, 1, 3),
+    new Enhancement(0, 1, 3, 2),
     [],
     ''
   ),
@@ -733,7 +733,7 @@ export const chips: Chip[] = [
     'ウシミツ',
     2,
     parseElements('闇'),
-    new Enhancement(3, 0, 4),
+    new Enhancement(3, 0, 4, 4),
     [],
     ''
   ),
@@ -752,7 +752,7 @@ export const chips: Chip[] = [
     'シンセイ',
     2,
     parseElements('光'),
-    new Enhancement(2, 1, 4),
+    new Enhancement(2, 1, 4, 2),
     [],
     ''
   ),
@@ -761,7 +761,7 @@ export const chips: Chip[] = [
     'オキヨメ',
     1,
     parseElements('光'),
-    new Enhancement(1, 0, 3),
+    new Enhancement(1, 0, 3, 5),
     [],
     ''
   ),
@@ -770,7 +770,7 @@ export const chips: Chip[] = [
     'センコウ',
     2,
     parseElements('光'),
-    new Enhancement(0, 7, 0),
+    new Enhancement(0, 7, 0, -8),
     [],
     ''
   ),
@@ -779,7 +779,7 @@ export const chips: Chip[] = [
     'ミソギ',
     1,
     parseElements('光'),
-    new Enhancement(2, 0, 2),
+    new Enhancement(2, 0, 2, -2),
     [],
     ''
   ),

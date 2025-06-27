@@ -4,6 +4,7 @@ import { Runner } from '../../entities/runner';
 export abstract class Timing {
     static readonly activateEvent = 'activate';
     static readonly deactivateEvent = 'deactivate';
+    public repeatable = false;
 
     protected _emitters: EventEmitter[] = [];
 

@@ -119,7 +119,7 @@ const ChipItem: React.FC<ChipItemProps> = ({ chip, isSelected, onPress }) => {
         </View>
         
         <ThemedText style={styles.enhancementText}>
-          コンジョー: {chip.enhancement.health} カケアシ: {chip.enhancement.speedLevel} ドロン: {chip.enhancement.motivation}
+          コンジョー: {chip.enhancement.health} カケアシ: {chip.enhancement.speedLevel} ドロン: {chip.enhancement.motivation} ノリノリ: {chip.enhancement.pleasantDiff}
         </ThemedText>
       </View>
       
@@ -142,9 +142,10 @@ const RunnerStats: React.FC<RunnerStatsProps> = ({ selectedChips, onElementIconP
       health: acc.health + chip.enhancement.health,
       speedLevel: acc.speedLevel + chip.enhancement.speedLevel,
       motivation: acc.motivation + chip.enhancement.motivation,
+      pleasantDiff: acc.pleasantDiff + chip.enhancement.pleasantDiff,
       cost: acc.cost + chip.cost,
     }),
-    { health: 0, speedLevel: 0, motivation: 0, cost: 0 }
+    { health: 0, speedLevel: 0, motivation: 0, pleasantDiff: 0, cost: 0 }
   );
 
   // 属性ごとの枚数を計算
@@ -177,13 +178,20 @@ const RunnerStats: React.FC<RunnerStatsProps> = ({ selectedChips, onElementIconP
         <View style={styles.statItem}>
           <ThemedText type="defaultSemiBold">カケアシ</ThemedText>
           <ThemedText style={styles.statValue}>
-            {SpeedLevel.calculateMaxWithEnhancement(totalStats.speedLevel).toFixed(2)}(+{totalStats.speedLevel}%)
+            {SpeedLevel.calculateMaxWithEnhancement(totalStats.speedLevel).toFixed(3)}(+{totalStats.speedLevel}%)
           </ThemedText>
         </View>
         <View style={styles.statItem}>
           <ThemedText type="defaultSemiBold">ドロン</ThemedText>
           <ThemedText style={styles.statValue}>
-            {Motivation.calculateSpanWithEnhancement(totalStats.motivation).toFixed(2)}(+{totalStats.motivation}%)
+            {Motivation.calculateSpanWithEnhancement(totalStats.motivation).toFixed(3)}(+{totalStats.motivation}%)
+          </ThemedText>
+        </View>
+        <View style={styles.statItem}>
+          <ThemedText type="defaultSemiBold">ノリノリ</ThemedText>
+          <ThemedText style={styles.statValue}>
+            {SpeedLevel.calculatePleasantMinWithEnhancement(totalStats.pleasantDiff).toFixed(2)} - {(SpeedLevel.INCREASE_SPAN +  SpeedLevel.calculatePleasantMinWithEnhancement(totalStats.pleasantDiff)).toFixed(2)}
+            ({totalStats.pleasantDiff > 0 && '+'}{totalStats.pleasantDiff}%)
           </ThemedText>
         </View>
       </View>

@@ -73,11 +73,13 @@ export class ChipCollection {
         const aggregated = this._chips.reduce((acc, chip) => ({
             health: acc.health + chip.enhancement.health,
             speedLevel: acc.speedLevel + chip.enhancement.speedLevel,
-            motivation: acc.motivation + chip.enhancement.motivation,}),
-            { health: 0, speedLevel: 0, motivation: 0 }
+            motivation: acc.motivation + chip.enhancement.motivation,
+            pleasantDiff: acc.pleasantDiff + chip.enhancement.pleasantDiff
+        }),
+            { health: 0, speedLevel: 0, motivation: 0, pleasantDiff: 0 }
         );
 
-        return new Enhancement(aggregated.health, aggregated.speedLevel, aggregated.motivation);
+        return new Enhancement(aggregated.health, aggregated.speedLevel, aggregated.motivation, aggregated.pleasantDiff);
     }
 
     get skills(): SkillProp[] {

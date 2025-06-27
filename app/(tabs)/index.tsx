@@ -39,6 +39,9 @@ export default function HomeScreen() {
           ドロン: MPのようなリソースです。走ることで貯まり、「ヨウジュツ」を使うために使用できます。
         </ThemedText>
         <ThemedText style={styles.content}>
+          ノリノリ: 状態「ノリノリ」になるカケアシの段階を表します。初期値では加速1回分-2回分の幅でノリノリになり、このパラメータで上下にずらすことができます。
+        </ThemedText>
+        <ThemedText style={styles.content}>
           スバヤサ: 走る速度の基準値です。実際の走る速度は、カケアシの段階とスバヤサの値によって決定されます。
         </ThemedText>
         <ThemedText style={styles.subHeading}>
@@ -48,7 +51,7 @@ export default function HomeScreen() {
           バチバチ: 他の走者と一定以下の距離にある状態です。コンジョーの消費量が30%軽減されます。
         </ThemedText>
         <ThemedText style={styles.content}>
-          ノリノリ: 毎レースランダムに抽選される、一定のカケアシの段階で走っている状態です。コンジョーの消費量が30%軽減されます。
+          ノリノリ: 一定のカケアシの段階で走っている状態です。コンジョーの消費量が30%軽減されます。ノリノリになる速度帯のことを「ノリノリゾーン」と呼びます。
         </ThemedText>
         <ThemedText style={styles.content}>
           ガムシャラ: その走者のカケアシの最大値付近の段階で走っている状態です。ドロンの貯まるスピードにボーナスが付きます。

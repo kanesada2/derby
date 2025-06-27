@@ -42,7 +42,7 @@ export class Skill {
                 if(!this._activated) {
                     return;
                 }
-                if(this._applied){
+                if(!this._timing.repeatable && this._applied){
                     return;
                 }
                 this._effects.forEach(effect => effect.apply());
