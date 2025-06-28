@@ -4,9 +4,11 @@ import { useFocusEffect } from "expo-router";
 import React, { useState } from "react";
 import { AppRegistry, StyleSheet } from "react-native";
 import { GameEngine } from "react-native-game-engine";
+import { ElementType } from "../domain/models/entities/chip";
 import { Race } from "../domain/models/entities/race";
 import { CountdownDisplay } from "./CountdownDisplay";
-import { createGameEntities, setupElementButtons } from "./Game/GameEntities";
+import { ElementButtons } from "./ElementButtons";
+import { createGameEntities } from "./Game/GameEntities";
 import { RaceSystem } from "./Game/RaceSystem";
 import { TouchSystem } from "./Game/TouchSystem";
 import { OkModal } from "./OkModal";
@@ -20,6 +22,12 @@ export default function RaceGame() {
   const [gameEntities, setGameEntities] = useState<any>(null);
   const { chips } = useChips();
   const [gameKey, setGameKey] = useState(0); // 追加
+
+  const handleElementPress = (elementType: ElementType) => {
+    if (gameEntities?.raceData?.playableRunner) {
+      gameEntities.raceData.playableRunner.interactElementSkill(elementType);
+    }
+  };
 
   const handleOk = () => {
     // ゲームエンティティを初期化
@@ -36,9 +44,6 @@ export default function RaceGame() {
     
     // ChipCollectionからelementTiersを取得してエンティティに設定
     entities.elementTiers = chips.elementTiers;
-    
-    // エレメントボタンを作成
-    setupElementButtons(entities);
     
     setGameEntities(entities);
     setGameKey(prev => prev + 1);
@@ -73,6 +78,10 @@ export default function RaceGame() {
         >
           <RunnerInfo race={gameEntities.raceData.race} runner={gameEntities.raceData.playableRunner} />
           <CountdownDisplay race={gameEntities.raceData.race} />
+          <ElementButtons 
+            playableRunner={gameEntities.raceData.playableRunner}
+            onElementPress={handleElementPress}
+          />
         </GameEngine>
       ) : (
         <ThemedView style={styles.gameLoop}>

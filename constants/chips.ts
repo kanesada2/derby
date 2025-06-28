@@ -551,7 +551,7 @@ export const chips: Chip[] = [
         timing: TimingNames.exhausted,
         effects: [{
           name: EffectNames.addHealth,
-          parameters: [500],
+          parameters: [400],
         },{
           name: EffectNames.addMotivation,
           parameters: [-3000],
@@ -676,7 +676,7 @@ export const chips: Chip[] = [
         timing: TimingNames.skillInteracted,
         effects: [{
           name: EffectNames.addHealth,
-          parameters: [300],
+          parameters: [200],
         }]
       }
     ],

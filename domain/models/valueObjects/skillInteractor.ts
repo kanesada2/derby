@@ -5,6 +5,9 @@ import { Motivation } from './parameters/motivation';
 const REQUIREMENTS_PER_TIER = 3000;
 
 export class SkillInteractor extends EventEmitter {
+    static readonly EVENT_INTERACT = 'interact';
+    static readonly EVENT_INTERACT_AVAILABLE = 'interactAvailable';
+
     private _canInteract: boolean = false;
     private _interacted: boolean = false;
 
@@ -18,10 +21,8 @@ export class SkillInteractor extends EventEmitter {
             if(!this.available){
                 return;
             }
-            if(this.requirements > this._motivation.current.value) {
-                return;
-            }
-            this._canInteract = true;
+            this._canInteract = !this._interacted && this.requirements <= this._motivation.current.value;
+            this.emit(SkillInteractor.EVENT_INTERACT_AVAILABLE);
         });
     }
 
