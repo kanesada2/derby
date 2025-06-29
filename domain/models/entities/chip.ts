@@ -16,11 +16,11 @@ export type ElementType = typeof Element[keyof typeof Element];
 export const ElementTierSpan = {
     FIRE: 3,
     WATER: 2,
-    WIND: 4,
+    WIND: 3,
     LIGHT: 4,
     DARK: 3,
     EARTH: 2,
-    THUNDER: 3,
+    THUNDER: 2,
 }
 
 export class Chip {

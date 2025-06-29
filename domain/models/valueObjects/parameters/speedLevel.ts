@@ -5,8 +5,8 @@ import { Health } from './health';
 export class SpeedLevel extends Parameter {
     static readonly MIN = 1.0;
     static readonly MAX_MAX = 2.0;
-    static readonly MAX_BASE = 1.4;
-    static readonly MAX_AMPLIFIER_MAX = 0.4;
+    static readonly MAX_BASE = 1.3;
+    static readonly MAX_AMPLIFIER_MAX = 0.5;
     static readonly INCREASE_SPAN = 0.1;
     static readonly DECRASE_TICKS = 300;
     static readonly PLEASANT_MAX_MIN = 1.1;

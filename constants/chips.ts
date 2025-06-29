@@ -319,7 +319,7 @@ export const chips: Chip[] = [
     'ワダツミ',
     4,
     parseElements('水', '光'),
-    new Enhancement(7, 4, 2, 9),
+    new Enhancement(7, 4, 2, 0),
     [
       {
         name: SkillNames.wadatsumi,
@@ -355,11 +355,11 @@ export const chips: Chip[] = [
         timing: TimingNames.concentrated,
         effects: [{
           name: EffectNames.addMaxSpeedLevel,
-          parameters: [SpeedLevel.INCREASE_SPAN],
+          parameters: [SpeedLevel.INCREASE_SPAN / 2],
         }]
       }
     ],
-    'バチバチの間だけ、カケアシの最大値が1ガンバリ分増加する'
+    'バチバチの間だけ、カケアシの最大値が0.5ガンバリ分増加する'
   ),
   new Chip(
     'raimei',
@@ -441,7 +441,7 @@ export const chips: Chip[] = [
     'オーロラ',
     3,
     parseElements('雷', '風'),
-    new Enhancement(4, 0, 4, 9),
+    new Enhancement(4, 0, 4, -5),
     [
       {
         name: SkillNames.aurora,
@@ -479,19 +479,19 @@ export const chips: Chip[] = [
     'ライジン',
     4,
     parseElements('雷', '光'),
-    new Enhancement(3, 7, 3, 8),
+    new Enhancement(3, 7, 3, -6),
     [
       {
         name: SkillNames.raijin,
         condition: ConditionNames.always,
-        timing: TimingNames.pleasant,
+        timing: TimingNames.motivating,
         effects: [{
           name: EffectNames.modifyCrawlHealthSpan,
           parameters: [-1],
         }]
       }
     ],
-    'ノリノリ中、ガンバリによるコンジョー消費が0'
+    'ガムシャラな間、ガンバリによるコンジョー消費が0'
   ),
   new Chip(
     'oikaze',
@@ -543,7 +543,7 @@ export const chips: Chip[] = [
     'ダイシゼン',
     4,
     parseElements('風', '土'),
-    new Enhancement(8, 0, 5, 10),
+    new Enhancement(8, 0, 5, 5),
     [
       {
         name: SkillNames.daishizen,

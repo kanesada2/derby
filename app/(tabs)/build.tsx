@@ -22,7 +22,7 @@ const getElementTooltip = (element: ElementType): string => {
     case Element.WATER:
       return '【WATER】コンジョーの消費量がレベル×6%減少する。【1レベル/2個】';
     case Element.WIND:
-      return '【WIND】カケアシが最高の時にノリノリになるようになり、ノリノリになる幅がレベル×20%拡大する。【1レベル/4個】';
+      return '【WIND】カケアシが最高の時にノリノリになるようになり、ノリノリになる幅がレベル×15%拡大する。【1レベル/3個】';
     case Element.LIGHT:
       return '【LIGHT】ドロンの貯まるスピードがレベル×100%増加する。【1レベル/4個】';
     case Element.DARK:
@@ -30,7 +30,7 @@ const getElementTooltip = (element: ElementType): string => {
     case Element.EARTH:
       return '【EARTH】コンジョーをレベル×600回復する。【1レベル/3個】';
     case Element.THUNDER:
-      return '【THUNDER】カケアシの最大値をレベル×1ガンバリ分増加させる。【1レベル/3個】';
+      return '【THUNDER】カケアシの最大値をレベル×1ガンバリ分増加させる。【1レベル/2個】';
     default:
       return '';
   }

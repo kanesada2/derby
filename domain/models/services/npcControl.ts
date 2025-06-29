@@ -45,8 +45,8 @@ export class NpcControl {
         if(ranRate > 0.5){
             this.powerUpRate = 1 - this.powerUpRate; // 前後半で逆転
         }
-        if(ranRate > 0.8){
-            this.crawlWeight += (rank - this.race.runners.length) / 5; // 8割を超えたら順位を上げるような動き
+        if(ranRate > 0.7){
+            this.crawlWeight += (rank - this.race.runners.length) / 5; // 7割を超えたら順位を上げるような動き
         }
     }
 
@@ -61,11 +61,12 @@ export class NpcControl {
         if (this.crawlWeight > 0) {
             this.runner.crawl();
         }
-        if(Math.random() < 0.015) {
+        if(Math.random() < 0.015 + this.race.indexOf(this.runner) / 1000) {
             if(Math.random() < this.powerUpRate) {
-                this.runner.health.current.value += 100;
+                this.runner.health.current.value += 80;
             }else{
                 this.runner.speedLevel.max.value += 0.0015;
+
             }
         }
     }

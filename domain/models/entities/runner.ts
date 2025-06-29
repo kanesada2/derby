@@ -215,7 +215,7 @@ export class Runner {
                 new AlwaysTiming(this),
                 [
                     new FixPleasantEffect(Element.WIND + chips.elementTiers.WIND, this, []),
-                    new ModifyPleasntRangeEffect(Element.WIND + chips.elementTiers.WIND, this, [-1, chips.elementTiers.WIND * 0.2]),
+                    new ModifyPleasntRangeEffect(Element.WIND + chips.elementTiers.WIND, this, [-1, chips.elementTiers.WIND * 0.15]),
                 ],
                 new Ristriction(this)
             ));
