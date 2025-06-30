@@ -7,6 +7,7 @@ import { HealthDisplay } from './HealthDisplay';
 import { LocationDisplay } from './LocationDisplay';
 import { MotivationDisplay } from './MotivationDisplay';
 import { PositionDisplay } from './PositionDisplay';
+import { RaceTimer } from './RaceTimer';
 import { SpeedLevelDisplay } from './SpeedLevelDisplay';
 import { StatusDisplay } from './StatusDisplay';
 
@@ -30,6 +31,7 @@ export function RunnerInfo({ race, runner }: RunnerInfoProps) {
         motivating={runner.motivating}
         exhausted={runner.exhausted} 
       />
+      <RaceTimer race={race} playableRunner={runner}></RaceTimer>
     </View>
   );
 }

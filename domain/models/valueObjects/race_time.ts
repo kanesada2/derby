@@ -14,10 +14,10 @@ export class RaceTime extends EventEmitter {
     }
 
     count(): void {
-        this._fromStart++;
         if (this._beforeStart > 0) {
             this._beforeStart--;
         }
+        this._fromStart++;
         const second = this._beforeStart === 0 ? 0 : Math.ceil(this._beforeStart / 60);
         if (this._beforeSecond > second) {
             this._beforeSecond = second;
