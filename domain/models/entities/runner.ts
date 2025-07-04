@@ -12,10 +12,10 @@ import { AddMaxSpeedLevelEffect } from '../valueObjects/skills/effects/addMaxSpe
 import { FixPleasantEffect } from '../valueObjects/skills/effects/fixPleasantEffect';
 import { ModifyBaseSpeedEffect } from '../valueObjects/skills/effects/modifybaseSpeedEffect';
 import { ModifyDecreaseSpanEffect } from '../valueObjects/skills/effects/modifyDecreaseSpanEffect';
+import { ModifyHealthCurrentEffect } from '../valueObjects/skills/effects/modifyHealthCurrentEffect';
 import { ModifyHealthSpanEffect } from '../valueObjects/skills/effects/modifyHealthSpanEffect';
 import { ModifyMotivationSpanEffect } from '../valueObjects/skills/effects/modifyMotivationSpanEffect';
 import { ModifyPleasntRangeEffect } from '../valueObjects/skills/effects/modifyPleasantRangeEffect';
-import { ModifyTargetHealthSpanEffect } from '../valueObjects/skills/effects/modifyTargetHealthSpanEffect';
 import { Ristriction } from '../valueObjects/skills/ristriction';
 import { AlwaysTiming } from '../valueObjects/skills/timings/alwaysTiming';
 import { ConcentratedTiming } from '../valueObjects/skills/timings/concentratedTiming';
@@ -237,9 +237,10 @@ export class Runner {
             interactor = new SkillInteractor(Element.DARK, chips.elementTiers.DARK, this.motivation);
             this._skills.set(Element.DARK, new Skill(
                 new InteractedCondition(this, interactor),
-                new ConcentratedTiming(this),
+                new AlwaysTiming(this),
                 [
-                    new ModifyTargetHealthSpanEffect(Element.DARK + chips.elementTiers.DARK, this, [chips.elementTiers.DARK * -0.02]),
+                    new ModifyBaseSpeedEffect(Element.DARK + chips.elementTiers.DARK, this, [chips.elementTiers.DARK * 0.08]),
+                    new ModifyHealthCurrentEffect(Element.DARK + chips.elementTiers.DARK, this, [-0.5 / chips.elementTiers.DARK]),
                 ],
                 new Ristriction(this)
             ));

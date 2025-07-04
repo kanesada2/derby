@@ -2,15 +2,16 @@ import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 import { Race } from '../../entities/race';
 import { Runner } from '../../entities/runner';
 import { Location } from '../location';
+import { Modifiable } from '../modifiable';
 import { Health } from '../parameters/health';
 
 export class Concentrated extends EventEmitter {
     private static readonly MODIFIER_KEY = 'concentrated';
     private static readonly HEALTH_MODIFIER = -0.3;
 
-    private static readonly THRESHOLD = 300;
     private _activated: boolean = false;
     private _target: Runner | null = null;
+    private _threshold: Modifiable = new Modifiable(300);
 
     constructor(
         private _race: Race,
@@ -29,8 +30,16 @@ export class Concentrated extends EventEmitter {
         return this._target;
     }
 
+    addThresoldMultiplier(key: string, value: number): void {
+        this._threshold.addMultiplier({key: key, value: value});
+    }
+
+    removeThresholdMultiplier(key: string): void {
+        this._threshold.removeMultiplier(key);
+    }
+
     private check(): void {
-        if (Math.abs(this._location.current - this._race.getNearest(this._location).location.current) > Concentrated.THRESHOLD) {
+        if (Math.abs(this._location.current - this._race.getNearest(this._location).location.current) > this._threshold.value) {
             this.deactivate();
         } else {
             this.activate();

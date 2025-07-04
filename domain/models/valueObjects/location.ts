@@ -23,11 +23,14 @@ export class Location extends EventEmitter {
         return this._current >= this._max;
     }
 
-    increase(): void {
+    increase(value: number|null = null): void {
         if (this.isReached) {
             return;
         }
-        this._current = Math.min(this.current + this._speed.value, this._max);
+        if (value === null) {
+            value = this._speed.value;
+        }
+        this._current = Math.min(this.current + value, this._max);
         this.emit('change', this._current);
     }
 }

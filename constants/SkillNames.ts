@@ -4,9 +4,11 @@ import { FirstTimeSkillInteractedCondition } from "@/domain/models/valueObjects/
 import { HasMotivationCondition } from "@/domain/models/valueObjects/skills/conditions/hasMotivationCondition";
 import { InteractedCondition } from "@/domain/models/valueObjects/skills/conditions/interactedCondition";
 import { AddHealthEffect } from "@/domain/models/valueObjects/skills/effects/addHealthEffect";
+import { AddLocationEffect } from "@/domain/models/valueObjects/skills/effects/addLocationEffect";
 import { AddMaxSpeedLevelEffect } from "@/domain/models/valueObjects/skills/effects/addMaxSpeedLevelEffect";
 import { AddMotivationEffect } from "@/domain/models/valueObjects/skills/effects/addMotivationEffect";
 import { AddTargetMaxSpeedLevelEffect } from "@/domain/models/valueObjects/skills/effects/addTargetMaxSpeedLevelEffect";
+import { ExpandConcentrateRangeEffect } from "@/domain/models/valueObjects/skills/effects/expandConcentrateRangeEffect";
 import { FixPleasantEffect } from "@/domain/models/valueObjects/skills/effects/fixPleasantEffect";
 import { FixSpeedLevelToMaxRateEffect } from "@/domain/models/valueObjects/skills/effects/fixSpeedLeveltoMaxRateEffect";
 import { ModifyBaseSpeedEffect } from "@/domain/models/valueObjects/skills/effects/modifybaseSpeedEffect";
@@ -38,7 +40,7 @@ export const SkillNames = {
     "gouka": "gouka",
     "magma": "magma",
     "taiyou": "taiyou",
-    "rengoku": "rengoku",
+    "houou": "houou",
     "unabara": "unabara",
     "gekiryuu": "gekiryuu",
     "seimei": "seimei",
@@ -49,7 +51,7 @@ export const SkillNames = {
     "jinrai": "jinrai",
     "aurora": "aurora",
     "raijin": "raijin",
-    "daishizen": "daishizen",
+    "bunpuku": "bunpuku",
     "akatsuki": "akatsuki",
     "tasogare": "tasogare",
     "daichi": "daichi",
@@ -94,9 +96,12 @@ export const EffectNames = {
     "addMotivation": AddMotivationEffect,
     "addHealth": AddHealthEffect,
     "addTargetMaxSpeedLevel": AddTargetMaxSpeedLevelEffect,
+    "addLocation": AddLocationEffect,
     "fixPleasant": FixPleasantEffect,
     "fixSpeedLevelToMaxRate": FixSpeedLevelToMaxRateEffect,
     "movePleasantRange": MovePleasntRangeEffect,
+    "expandConcetrateRange": ExpandConcentrateRangeEffect,
+
 } as const;
 
 export const RistrictionNames = {

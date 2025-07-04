@@ -18,7 +18,7 @@ export const ElementTierSpan = {
     WATER: 2,
     WIND: 3,
     LIGHT: 4,
-    DARK: 3,
+    DARK: 4,
     EARTH: 2,
     THUNDER: 2,
 }

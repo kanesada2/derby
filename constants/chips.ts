@@ -80,10 +80,10 @@ export const chips: Chip[] = [
       timing: TimingNames.concentratedMotivating,
       effects: [{
         name: EffectNames.modifyBaseSpeed,
-        parameters: [0.03],
+        parameters: [0.02],
       }]
     }],
-    'バチバチかつガムシャラの間、スバヤサ3%増加'
+    'バチバチかつガムシャラの間、スバヤサ2%増加'
   ),
   new Chip(
     'yukemuri',
@@ -121,13 +121,13 @@ export const chips: Chip[] = [
     [{
       name: SkillNames.magma,
       condition: ConditionNames.always,
-      timing: TimingNames.concentrated,
+      timing: TimingNames.always,
       effects: [{
-        name: EffectNames.modifyTargetSpeedLevel,
-        parameters: [0.1],
+        name: EffectNames.expandConcetrateRange,
+        parameters: [0.2],
       }]
     }],
-    'バチバチになった時、相手のカケアシレベルが10%増える'
+    'バチバチになるキョリの範囲が20%拡大'
   ),
   new Chip(
     'ryougen',
@@ -176,23 +176,23 @@ export const chips: Chip[] = [
     ''
   ),
   new Chip(
-    'rengoku',
-    'レンゴク',
+    'houou',
+    'ホウオウ',
     4,
-    parseElements('火', '闇'),
-    new Enhancement(2, 9, 2, -10),
+    parseElements('火', '風'),
+    new Enhancement(4, 5, 4, 0),
     [
       {
-        name: SkillNames.rengoku,
-        condition: ConditionNames.always,
-        timing: TimingNames.concentrated,
+        name: SkillNames.houou,
+        condition: ConditionNames.firstTimeSkillInteracted,
+        timing: TimingNames.skillInteracted,
         effects: [{
-          name: EffectNames.modifyTargetHealthSpan,
-          parameters: [0.05],
+          name: EffectNames.addMotivation,
+          parameters: [1500],
         }]
       }
     ],
-    'バチバチな相手のコンジョー消費が5%増える'
+    '最初のヨウジュツ発動時、ドロンゲージを0.5本回復'
   ),
   new Chip(
     'shizuku',
@@ -319,19 +319,19 @@ export const chips: Chip[] = [
     'ワダツミ',
     4,
     parseElements('水', '光'),
-    new Enhancement(7, 4, 2, 0),
+    new Enhancement(7, 4, 2, 6),
     [
       {
         name: SkillNames.wadatsumi,
-        condition: ConditionNames.firstTimeSkillInteracted,
-        timing: TimingNames.skillInteracted,
+        condition: ConditionNames.always,
+        timing: TimingNames.pleasant,
         effects: [{
-          name: EffectNames.addMotivation,
-          parameters: [1500],
+          name: EffectNames.modifyCrawlHealthSpan,
+          parameters: [-1],
         }]
       }
     ],
-    '最初のヨウジュツ発動時、ドロンゲージを0.5本回復'
+    'ノリノリな間、ガンバリによるコンジョー消費が0'
   ),
   new Chip(
     'ikazuchi',
@@ -539,14 +539,14 @@ export const chips: Chip[] = [
     ''
   ),
   new Chip(
-    'daishizen',
-    'ダイシゼン',
+    'bunpuku',
+    'ブンプク',
     4,
-    parseElements('風', '土'),
-    new Enhancement(8, 0, 5, 5),
+    parseElements('土', '闇'),
+    new Enhancement(8, 0, 5, -5),
     [
       {
-        name: SkillNames.daishizen,
+        name: SkillNames.bunpuku,
         condition: ConditionNames.hasMotivation,
         timing: TimingNames.exhausted,
         effects: [{
@@ -710,14 +710,14 @@ export const chips: Chip[] = [
       {
             name: SkillNames.ankoku,
             condition: ConditionNames.always,
-            timing: TimingNames.concentrated,
+            timing: TimingNames.skillInteracted,
             effects: [{
-                name: EffectNames.addTargetMaxSpeedLevel,
-                parameters: [-0.05],
+                name: EffectNames.addLocation,
+                parameters: [180],
             }]
         }
     ],
-    'バチバチな相手のカケアシレベル最大値を少し減少'
+    'ヨウジュツを発動するたび、3m前にワープする'
   ),
   new Chip(
     'kageboshi',

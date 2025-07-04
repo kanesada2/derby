@@ -37,7 +37,7 @@ export function LocationDisplay({ location }: LocationDisplayProps) {
         </View>
       </View>
       <ThemedText style={styles.value} type="default">
-        {Math.round(current)}/{Math.round(max)}
+        {Math.round(current / 60)}/{Math.round(max / 60)}
       </ThemedText>
     </View>
   );
