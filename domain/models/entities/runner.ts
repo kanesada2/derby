@@ -239,7 +239,7 @@ export class Runner {
                 new InteractedCondition(this, interactor),
                 new AlwaysTiming(this),
                 [
-                    new ModifyBaseSpeedEffect(Element.DARK + chips.elementTiers.DARK, this, [chips.elementTiers.DARK * 0.08]),
+                    new ModifyBaseSpeedEffect(Element.DARK + chips.elementTiers.DARK, this, [0.1]),
                     new ModifyHealthCurrentEffect(Element.DARK + chips.elementTiers.DARK, this, [-0.5 / chips.elementTiers.DARK]),
                 ],
                 new Ristriction(this)
