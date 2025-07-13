@@ -14,8 +14,8 @@ import { ModifyBaseSpeedEffect } from '../valueObjects/skills/effects/modifybase
 import { ModifyDecreaseSpanEffect } from '../valueObjects/skills/effects/modifyDecreaseSpanEffect';
 import { ModifyHealthCurrentEffect } from '../valueObjects/skills/effects/modifyHealthCurrentEffect';
 import { ModifyHealthSpanEffect } from '../valueObjects/skills/effects/modifyHealthSpanEffect';
+import { ModifyMotivatingRangeEffect } from '../valueObjects/skills/effects/modifyMotivatingRangeEffect';
 import { ModifyMotivationSpanEffect } from '../valueObjects/skills/effects/modifyMotivationSpanEffect';
-import { ModifyPleasntRangeEffect } from '../valueObjects/skills/effects/modifyPleasantRangeEffect';
 import { Ristriction } from '../valueObjects/skills/ristriction';
 import { AlwaysTiming } from '../valueObjects/skills/timings/alwaysTiming';
 import { ConcentratedTiming } from '../valueObjects/skills/timings/concentratedTiming';
@@ -214,8 +214,8 @@ export class Runner {
                 new InteractedCondition(this, interactor),
                 new AlwaysTiming(this),
                 [
+                    new ModifyMotivatingRangeEffect(Element.WIND + chips.elementTiers.WIND, this, [chips.elementTiers.WIND * 0.2]),
                     new FixPleasantEffect(Element.WIND + chips.elementTiers.WIND, this, []),
-                    new ModifyPleasntRangeEffect(Element.WIND + chips.elementTiers.WIND, this, [-1, chips.elementTiers.WIND * 0.15]),
                 ],
                 new Ristriction(this)
             ));

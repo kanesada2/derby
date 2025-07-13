@@ -16,6 +16,7 @@ import { ModifyCrawlHealthSpanEffect } from "@/domain/models/valueObjects/skills
 import { ModifyCrawlSpeedLevelEffect } from "@/domain/models/valueObjects/skills/effects/modifyCrawlSpeedLevelEffect";
 import { ModifyDecreaseSpanEffect } from "@/domain/models/valueObjects/skills/effects/modifyDecreaseSpanEffect";
 import { ModifyHealthSpanEffect } from "@/domain/models/valueObjects/skills/effects/modifyHealthSpanEffect";
+import { ModifyMotivatingRangeEffect } from "@/domain/models/valueObjects/skills/effects/modifyMotivatingRangeEffect";
 import { ModifyMotivationSpanEffect } from "@/domain/models/valueObjects/skills/effects/modifyMotivationSpanEffect";
 import { ModifyPleasntRangeEffect } from "@/domain/models/valueObjects/skills/effects/modifyPleasantRangeEffect";
 import { ModifyTargetBaseSpeedEffect } from "@/domain/models/valueObjects/skills/effects/modifyTargetBaseSpeedEffect";
@@ -92,6 +93,7 @@ export const EffectNames = {
     "modifyTargetBaseSpeed": ModifyTargetBaseSpeedEffect,
     "modifyTargetHealthSpan": ModifyTargetHealthSpanEffect,
     "modifyTargetSpeedLevel": ModifyTargetSpeedLevelEffect,
+    "modifyMotivatingRange": ModifyMotivatingRangeEffect,
     "addMaxSpeedLevel": AddMaxSpeedLevelEffect,
     "addMotivation": AddMotivationEffect,
     "addHealth": AddHealthEffect,

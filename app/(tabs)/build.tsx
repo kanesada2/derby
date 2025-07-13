@@ -22,7 +22,7 @@ const getElementTooltip = (element: ElementType): string => {
     case Element.WATER:
       return '【WATER】コンジョーの消費量がレベル×6%減少する。【1レベル/2個】';
     case Element.WIND:
-      return '【WIND】ガムシャラの時にノリノリになるようになり、ノリノリになる幅がレベル×15%増加【1レベル/3個】';
+      return '【WIND】ガムシャラの時にノリノリになるようになり、ガムシャラになる幅がレベル×20%増加【1レベル/3個】';
     case Element.LIGHT:
       return '【LIGHT】ドロンの貯まるスピードがレベル×100%増加する。【1レベル/4個】';
     case Element.DARK:

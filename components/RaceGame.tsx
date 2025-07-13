@@ -1,16 +1,14 @@
 import { useChips } from "@/contexts/ChipsContext";
 import { Runner } from "@/domain/models/entities/runner";
 import { useFocusEffect } from "expo-router";
-import React, { useState } from "react";
-import { AppRegistry, StyleSheet } from "react-native";
-import { GameEngine } from "react-native-game-engine";
+import React, { useRef, useState } from "react";
+import { AppRegistry, Pressable, StyleSheet } from "react-native";
 import { ElementType } from "../domain/models/entities/chip";
 import { Race } from "../domain/models/entities/race";
+import { AnimationLoop, AnimationLoopRef } from "./AnimationLoop";
 import { CountdownDisplay } from "./CountdownDisplay";
 import { ElementButtons } from "./ElementButtons";
-import { createGameEntities } from "./Game/GameEntities";
-import { RaceSystem } from "./Game/RaceSystem";
-import { TouchSystem } from "./Game/TouchSystem";
+import { RaceCanvas } from "./Game/RaceCanvas";
 import { OkModal } from "./OkModal";
 import { RunnerInfo } from "./RunnerInfo/RunnerInfo";
 import { ThemedText } from "./ThemedText";
@@ -18,42 +16,59 @@ import { ThemedView } from "./ThemedView";
 
 export default function RaceGame() {
   const [modalVisible, setModalVisible] = useState(true);
-  const [isRunning, setIsRunning] = useState(false);
-  const [gameEntities, setGameEntities] = useState<any>(null);
+  const [race, setRace] = useState<Race | null>(null);
+  const [playableRunner, setPlayableRunner] = useState<Runner | null>(null);
+  const [, setUpdateCounter] = useState(0);
   const { chips } = useChips();
-  const [gameKey, setGameKey] = useState(0); // 追加
+  const animationLoopRef = useRef<AnimationLoopRef>(null);
+  const raceRef = useRef<Race | null>(null);
+  const playableRunnerRef = useRef<Runner | null>(null);
 
   const handleElementPress = (elementType: ElementType) => {
-    if (gameEntities?.raceData?.playableRunner) {
-      gameEntities.raceData.playableRunner.interactElementSkill(elementType);
+    if (playableRunner) {
+      playableRunner.interactElementSkill(elementType);
     }
   };
 
+  const handleTouch = () => {
+    if (playableRunner) {
+      playableRunner.crawl();
+    }
+  };
+
+  const handleGameFrame = (deltaTime: number, totalTime: number) => {
+    if (!raceRef.current || !playableRunnerRef.current) return;
+    
+    // RaceSystemの処理を移植
+    raceRef.current.update(deltaTime);
+    
+    // 強制的に再レンダーを発生させる
+    setUpdateCounter(prev => prev + 1);
+  };
+
   const handleOk = () => {
-    // ゲームエンティティを初期化
-    const race = new Race();
-    const playableRunner = Runner.createWithChips(chips, race, 0);
-    race.addPlayableRunner(playableRunner);
-    race.summonRunners();
+    // レースとランナーを初期化
+    const newRace = new Race();
+    const newPlayableRunner = Runner.createWithChips(chips, newRace, 0);
+    newRace.addPlayableRunner(newPlayableRunner);
+    newRace.summonRunners();
     
-    // ゲームエンティティを作成
-    const entities = createGameEntities(race, playableRunner);
-    
-    // ランナーやレースのデータを保存（他のシステムから参照可能に）
-    entities.raceData = { race, playableRunner };
-    
-    // ChipCollectionからelementTiersを取得してエンティティに設定
-    entities.elementTiers = chips.elementTiers;
-    
-    setGameEntities(entities);
-    setGameKey(prev => prev + 1);
+    setRace(newRace);
+    setPlayableRunner(newPlayableRunner);
+    raceRef.current = newRace;
+    playableRunnerRef.current = newPlayableRunner;
     setModalVisible(false);
-    setIsRunning(true);
+    //console.log(race, playableRunner);
+    
+    // アニメーションループを開始
+    animationLoopRef.current?.start();
   };
 
   useFocusEffect(
     React.useCallback(() => {
       setModalVisible(true);
+      // アニメーションループを停止
+      animationLoopRef.current?.stop();
     }, [])
   );
 
@@ -68,27 +83,29 @@ export default function RaceGame() {
           レースを開始しますか？
         </ThemedText>
       </OkModal>
-      {gameEntities ? (
-        <GameEngine
-          key={gameKey}
-          style={styles.gameLoop}
-          running={isRunning}
-          entities={gameEntities}
-          systems={[RaceSystem, TouchSystem]}
-        >
-          <RunnerInfo race={gameEntities.raceData.race} runner={gameEntities.raceData.playableRunner} />
-          <CountdownDisplay race={gameEntities.raceData.race} />
-          <ElementButtons 
-            playableRunner={gameEntities.raceData.playableRunner}
-            onElementPress={handleElementPress}
-          />
-        </GameEngine>
-      ) : (
-        <ThemedView style={styles.gameLoop}>
-          {/* GameEngine無しの状態 */}
-          {/* UI components */}
-        </ThemedView>
-      )}
+      
+      <AnimationLoop
+        ref={animationLoopRef}
+        onFrame={handleGameFrame}
+        targetFPS={60}
+        autoStart={false}
+      >
+        {race && playableRunner ? (
+          <Pressable onPress={handleTouch} style={styles.gameLoop}>
+            <RaceCanvas race={race} playableRunner={playableRunner} />
+            <RunnerInfo race={race} runner={playableRunner} />
+            <CountdownDisplay race={race} />
+            <ElementButtons 
+              playableRunner={playableRunner}
+              onElementPress={handleElementPress}
+            />
+          </Pressable>
+        ) : (
+          <ThemedView style={styles.gameLoop}>
+            {/* ゲーム開始前の状態 */}
+          </ThemedView>
+        )}
+      </AnimationLoop>
     </ThemedView>
   );
 }

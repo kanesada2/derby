@@ -16,6 +16,7 @@ export class SpeedLevel extends Parameter {
 
     pleasantMin: Modifiable = new Modifiable(1);
     pleasantMax: Modifiable = new Modifiable(1);
+    motivatiingRange: Modifiable = new Modifiable(SpeedLevel.INCREASE_SPAN);
 
     private _motivatingMin: number = 1;
     private _exhausted: boolean = false;
@@ -66,11 +67,11 @@ export class SpeedLevel extends Parameter {
             // 乱数10個の最小値~乱数80個の10番目に大きい数
             this._max = new Modifiable(SpeedLevel.MAX_BASE + SpeedLevel.MAX_AMPLIFIER_MAX * lotList[lotCountBase - 1]);
         }
-        this._motivatingMin = this._max.value - SpeedLevel.INCREASE_SPAN;
+        this.updateMotivatingMin();
     }
 
     private updateMotivatingMin(): void {
-        this._motivatingMin = this._max.value - SpeedLevel.INCREASE_SPAN;
+        this._motivatingMin = this._max.value - this.motivatiingRange.value;
     }
 
     isPleasant(): boolean {
@@ -150,5 +151,15 @@ export class SpeedLevel extends Parameter {
 
     removeDecreaseSpanMultiplier(key: string): void {
         this._decreaseSpan.removeMultiplier(key);
+    }
+
+    addMotivatingRangeMultiplier(key: string, value: number): void {
+        this.motivatiingRange.addMultiplier({key, value});
+        this.updateMotivatingMin();
+    }
+
+    removeMotivatingRangeMultiplier(key: string): void {
+        this.motivatiingRange.removeMultiplier(key);
+        this.updateMotivatingMin();
     }
 }
