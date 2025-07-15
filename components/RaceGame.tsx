@@ -19,6 +19,7 @@ export default function RaceGame() {
   const [race, setRace] = useState<Race | null>(null);
   const [playableRunner, setPlayableRunner] = useState<Runner | null>(null);
   const [, setUpdateCounter] = useState(0);
+  const [raceKey, setRaceKey] = useState(0);
   const { chips } = useChips();
   const animationLoopRef = useRef<AnimationLoopRef>(null);
   const raceRef = useRef<Race | null>(null);
@@ -58,7 +59,10 @@ export default function RaceGame() {
     raceRef.current = newRace;
     playableRunnerRef.current = newPlayableRunner;
     setModalVisible(false);
-    //console.log(race, playableRunner);
+    
+    // RunnerInfoの再レンダーを強制
+    setUpdateCounter(prev => prev + 1);
+    setRaceKey(prev => prev + 1);
     
     // アニメーションループを開始
     animationLoopRef.current?.start();
@@ -93,7 +97,7 @@ export default function RaceGame() {
         {race && playableRunner ? (
           <Pressable onPress={handleTouch} style={styles.gameLoop}>
             <RaceCanvas race={race} playableRunner={playableRunner} />
-            <RunnerInfo race={race} runner={playableRunner} />
+            <RunnerInfo key={raceKey} race={race} runner={playableRunner} />
             <CountdownDisplay race={race} />
             <ElementButtons 
               playableRunner={playableRunner}

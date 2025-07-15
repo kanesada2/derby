@@ -26,7 +26,7 @@ const getElementTooltip = (element: ElementType): string => {
     case Element.LIGHT:
       return '【LIGHT】ドロンの貯まるスピードがレベル×100%増加する。【1レベル/4個】';
     case Element.DARK:
-      return '【DARK】コンジョーの現在値が50÷レベル%減少するかわりに、スバヤサが10%上昇する。【1レベル/4個】';
+      return '【DARK】コンジョーの現在値が40÷レベル%減少するかわりに、スバヤサが10%上昇する。【1レベル/4個】';
     case Element.EARTH:
       return '【EARTH】コンジョーをレベル×600回復する。【1レベル/2個】';
     case Element.THUNDER:

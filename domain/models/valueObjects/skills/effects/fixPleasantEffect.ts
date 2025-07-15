@@ -1,6 +1,8 @@
 import { Effect } from "../effect";
 
 export class FixPleasantEffect extends Effect {
+    private max = this.runner.speedLevel.max.value;
+    private motivatingMin = this.runner.speedLevel.motivatingMin;
     apply(): void {
         const fix = () => {
             this.runner.speedLevel.pleasantMax.removeOffset(this.skillId);
@@ -11,7 +13,12 @@ export class FixPleasantEffect extends Effect {
             this.runner.speedLevel.pleasantMin.addOffset({key: this.skillId, value: minDiff});
         }
         fix();
-        this.runner.motivating.addListener('change', ()=>{
+        this.runner.location.addListener('change', ()=>{
+            if(this.runner.speedLevel.max.value === this.max || this.runner.speedLevel.motivatingMin === this.motivatingMin){
+                return;
+            }
+            this.max = this.runner.speedLevel.max.value;
+            this.motivatingMin = this.runner.speedLevel.motivatingMin;
             fix();
         })
         

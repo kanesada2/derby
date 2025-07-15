@@ -240,7 +240,7 @@ export class Runner {
                 new AlwaysTiming(this),
                 [
                     new ModifyBaseSpeedEffect(Element.DARK + chips.elementTiers.DARK, this, [0.1]),
-                    new ModifyHealthCurrentEffect(Element.DARK + chips.elementTiers.DARK, this, [-0.5 / chips.elementTiers.DARK]),
+                    new ModifyHealthCurrentEffect(Element.DARK + chips.elementTiers.DARK, this, [-0.4 / chips.elementTiers.DARK]),
                 ],
                 new Ristriction(this)
             ));

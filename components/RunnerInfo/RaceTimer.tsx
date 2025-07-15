@@ -17,6 +17,9 @@ export function RaceTimer({ race, playableRunner }: RaceTimerProps) {
 
   useEffect(() => {
     const handleRaceTimeChange = () => {
+      if (playableRunner.location.isReached && isFinished) {
+        setIsFinished(false);
+      }
       // playableRunnerがゴールした場合はタイマー停止
       if (playableRunner.location.isReached) {
         if (!isFinished) {
@@ -48,10 +51,6 @@ export function RaceTimer({ race, playableRunner }: RaceTimerProps) {
       if (!playableRunner.location.isReached) {
         setElapsedTime(race.raceTime.fromStart);
       }
-    }
-
-    if (playableRunner.location.isReached) {
-      setIsFinished(true);
     }
 
     race.raceTime.addListener('change', handleRaceTimeChange);
