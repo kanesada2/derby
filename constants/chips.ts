@@ -225,11 +225,11 @@ export const chips: Chip[] = [
         timing: TimingNames.pleasant,
         effects: [{
           name: EffectNames.modifyMotivationSpan,
-          parameters: [0.03],
+          parameters: [0.04],
         }]
       }
     ],
-    'ノリノリ中、ドロンゲージ増加量+3%'
+    'ノリノリ中、ドロンゲージ増加量+4%'
   ),
   new Chip(
     'gekiryuu',
@@ -241,14 +241,14 @@ export const chips: Chip[] = [
       {
         name: SkillNames.gekiryuu,
         condition: ConditionNames.always,
-        timing: TimingNames.skillInteracted,
+        timing: TimingNames.speedLevelMoreThanPlesantMax,
         effects: [{
           name: EffectNames.modifyBaseSpeed,
-          parameters: [0.01],
+          parameters: [0.02],
         }]
       }
     ],
-    'ヨウジュツを発動するたびにスバヤサが1%増加'
+    'カケアシレベルがノリノリゾーンよりも高いとき、スバヤサが2%増加'
   ),
   new Chip(
     'raiu',
@@ -612,11 +612,11 @@ export const chips: Chip[] = [
         timing: TimingNames.healthIncreased,
         effects: [{
           name: EffectNames.modifyMotivationSpan,
-          parameters: [0.01],
+          parameters: [0.02],
         }]
       }
     ],
-    'コンジョーが回復する度、ドロンを+1%'
+    'コンジョーが回復する度、ドロンを+2%'
   ),
   new Chip(
     'mebuki',
@@ -680,7 +680,7 @@ export const chips: Chip[] = [
         }]
       }
     ],
-    'ヨウジュツを使用する度、コンジョーが少し回復'
+    'ヨウジュツを使用する度、コンジョーが200回復'
   ),
   new Chip(
     'shinobi',
@@ -737,16 +737,25 @@ export const chips: Chip[] = [
     [],
     ''
   ),
-  /* enhancementの適用整理したあとに追加する
   new Chip(
     'konton',
     'コントン',
     3,
     parseElements('闇', '光'),
-    new Enhancement(0, 0, 0),
-    [],
-    '全てのメダルの効果を、セットされているメダルの属性の数×5%増加'
-  ),*/
+    new Enhancement(3, 0, 5, -2),
+    [
+      {
+        name: SkillNames.konton,
+        condition: ConditionNames.always,
+        timing: TimingNames.skillInteracted,
+        effects: [{
+          name: EffectNames.modifyBaseSpeed,
+          parameters: [0.01],
+        }]
+      }
+    ],
+    'ヨウジュツを発動するたびにスバヤサが1%増加'
+  ),
   new Chip(
     'shinsei',
     'シンセイ',

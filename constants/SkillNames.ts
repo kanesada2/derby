@@ -35,6 +35,7 @@ import { HealthMteEightyTiming } from "@/domain/models/valueObjects/skills/timin
 import { MotivatingTiming } from "@/domain/models/valueObjects/skills/timings/motivatingTiming";
 import { PleasantTiming } from "@/domain/models/valueObjects/skills/timings/pleasantTiming";
 import { SkillInteractedTiming } from "@/domain/models/valueObjects/skills/timings/skillInteractedTiming";
+import { SpeedLevelMoreThanPlesantMaxTiming } from "@/domain/models/valueObjects/skills/timings/speedLevelMoreThanPlesantMaxTiming";
 
 export const SkillNames = {
     "homura": "homura",
@@ -72,6 +73,7 @@ export const TimingNames = {
     "healthMte80": HealthMteEightyTiming,
     "healthIncreased": HealthIncreasedTiming,
     "exhausted": ExhaustedTiming,
+    "speedLevelMoreThanPlesantMax": SpeedLevelMoreThanPlesantMaxTiming, 
 } as const
 
 export const ConditionNames = {
