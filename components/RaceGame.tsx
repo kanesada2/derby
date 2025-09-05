@@ -1,5 +1,6 @@
 import { useChips } from "@/contexts/ChipsContext";
 import { Runner } from "@/domain/models/entities/runner";
+import Slider from "@react-native-community/slider";
 import { useFocusEffect } from "expo-router";
 import React, { useRef, useState } from "react";
 import { AppRegistry, Pressable, StyleSheet } from "react-native";
@@ -24,6 +25,14 @@ export default function RaceGame() {
   const animationLoopRef = useRef<AnimationLoopRef>(null);
   const raceRef = useRef<Race | null>(null);
   const playableRunnerRef = useRef<Runner | null>(null);
+  // 目標タイムのstate（初期値は160秒）
+  const [targetTime, setTargetTime] = useState(160);
+
+  // 時間を2分○○秒の形式に変換する関数
+  const formatTime = (seconds: number) => {
+    const remainingSeconds = seconds - 120;
+    return `2分${remainingSeconds.toString().padStart(2, '0')}秒`;
+  };
 
   const handleElementPress = (elementType: ElementType) => {
     if (playableRunner) {
@@ -52,7 +61,7 @@ export default function RaceGame() {
     const newRace = new Race();
     const newPlayableRunner = Runner.createWithChips(chips, newRace, 0);
     newRace.addPlayableRunner(newPlayableRunner);
-    newRace.summonRunners();
+    newRace.summonRunners(targetTime);
     
     setRace(newRace);
     setPlayableRunner(newPlayableRunner);
@@ -83,6 +92,20 @@ export default function RaceGame() {
         onOk={handleOk}
         title="確認"
       >
+        <ThemedView style={styles.targetTimeContainer}>
+          <ThemedText style={styles.targetTimeLabel}>
+                        NPC目標タイム: {formatTime(targetTime)}
+          </ThemedText>
+          <Slider
+            minimumValue={145}
+            maximumValue={160}
+            value={targetTime}
+            onValueChange={(value: number) => setTargetTime(Math.round(value))}
+            style={{
+              height: 40
+            }}
+          />
+        </ThemedView>
         <ThemedText style={styles.modalText}>
           レースを開始しますか？
         </ThemedText>
@@ -128,7 +151,30 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
-  }
+  },
+  targetTimeContainer: {
+    width: '100%',
+    marginTop: 15,
+  },
+  targetTimeLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  slider: {
+    width: '100%',
+    height: 40,
+  },
+  sliderThumb: {
+    backgroundColor: '#0a7ea4',
+    width: 20,
+    height: 20,
+  },
+  sliderTrack: {
+    height: 4,
+    borderRadius: 2,
+  },
 });
 
 AppRegistry.registerComponent("RaceGame", () => RaceGame);

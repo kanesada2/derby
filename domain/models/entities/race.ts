@@ -7,6 +7,7 @@ import { Runner } from './runner';
 
 export class Race extends EventEmitter {
     private static readonly RUNNERS_COUNT = 7;
+    static readonly DISTANCE_METER = 2400;
     static readonly DISTANCE = 144000; // 2400 * 60
 
     private _raceTime: RaceTime;
@@ -69,10 +70,10 @@ export class Race extends EventEmitter {
         this.playable = runner;
     }
 
-    summonRunners(): void {
+    summonRunners(aimingTime: number = 0): void {
         for (let i = this._runners.length; i < Race.RUNNERS_COUNT; i++) {
             const runner = Runner.create(this, i);
-            new NpcControl(runner, this);
+            new NpcControl(runner, this, aimingTime);
             this._runners.push(runner);
         }
         this._runners.sort(() => Math.random() - 0.5); // shuffle

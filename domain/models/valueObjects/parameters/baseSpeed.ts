@@ -1,7 +1,7 @@
 import { Parameter } from '../parameter';
 
 export class BaseSpeed extends Parameter {
-    private static readonly BASE = 13;
+    static readonly BASE = 13;
 
 
     constructor(isEnhanced: boolean = false

@@ -1,9 +1,11 @@
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 
 export class RaceTime extends EventEmitter {
+    static readonly BEFORESECOND_DEFAULT = 4;
+
     private _fromStart: number = 0;
     private _beforeStart: number = 240;
-    private _beforeSecond: number = 4;
+    private _beforeSecond: number = RaceTime.BEFORESECOND_DEFAULT;
 
     get fromStart(): number {
         return this._fromStart;

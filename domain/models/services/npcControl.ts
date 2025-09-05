@@ -1,5 +1,7 @@
 import { Race } from '../entities/race';
 import { Runner } from '../entities/runner';
+import { BaseSpeed } from '../valueObjects/parameters/baseSpeed';
+import { RaceTime } from '../valueObjects/race_time';
 
 export class NpcControl {
     private logged: boolean = false;
@@ -9,10 +11,16 @@ export class NpcControl {
     private concentratePreference: number = 1;
     private appropriatePreference: number = 1;
     private powerUpRate: number = 0.5;
+    private awakeTiming: number = 0.3;
+    private aimingSpeed: number = 1.25;
+    private averageSpeed: number = 1;
+    private tick: number = 0;
+    private updateAverageCount = 0;
 
     constructor(
         private runner: Runner,
-        private race: Race
+        private race: Race,
+        private aimingTime: number,
     ) {
         this.determinePreferences();
         this.runner.location.addListener('change', this.play.bind(this));
@@ -24,9 +32,25 @@ export class NpcControl {
             this.pleasantPreference *= pleasantAptitude * -100; // 最大で0.2×0.2なのでスケール合わせと、符号がマイナスになるときだけ加算するので
         }
         this.powerUpRate = (Math.random() + Math.random()) / 2;
+        this.awakeTiming += Math.random() / 2;
+        if(this.aimingTime !== 0){
+            this.aimingSpeed = Race.DISTANCE_METER / (this.aimingTime - RaceTime.BEFORESECOND_DEFAULT) / BaseSpeed.BASE
+        }
     }
 
     private adjustWeight(): void {
+        const ranRate = this.runner.location.current / this.runner.location.max;
+        if(ranRate > 0.3){
+            this.powerUpRate = 1 - this.powerUpRate; // 前後半で逆転
+        }
+        if(ranRate > this.awakeTiming){
+            if(this.averageSpeed < this.aimingSpeed){
+                this.crawlWeight = 1;
+            }else {
+                this.crawlWeight = 0;
+            }
+            return;
+        }
         const nearest = this.race.getNearest(this.runner.location);
         const nearestDistance = nearest.location.current - this.runner.location.current;
         
@@ -39,15 +63,6 @@ export class NpcControl {
         const appropriateAmount = this.runner.health.current.value * this.runner.baseSpeed.current.value / (this.runner.location.max - this.runner.location.current) * 1.2;
         const appropriateSpeedLevel = (appropriateAmount + 4) / 5;
         this.crawlWeight += 40 * (appropriateSpeedLevel - this.runner.speedLevel.current.value) * Math.random() * this.appropriatePreference;
-        
-        const ranRate = this.runner.location.current / this.runner.location.max;
-        const rank = this.race.indexOf(this.runner) + 1;
-        if(ranRate > 0.5){
-            this.powerUpRate = 1 - this.powerUpRate; // 前後半で逆転
-        }
-        if(ranRate > 0.7){
-            this.crawlWeight += (rank - this.race.runners.length) / 5; // 7割を超えたら順位を上げるような動き
-        }
     }
 
     private play(): void {
@@ -59,16 +74,30 @@ export class NpcControl {
         }
         this.adjustWeight();
         if (this.crawlWeight > 0) {
+            this.updateAverage();
             this.runner.crawl();
         }
-        if(Math.random() < 0.017 + this.race.indexOf(this.runner) / 1000) {
-            if(Math.random() < this.powerUpRate) {
-                this.runner.health.current.value += 80;
-            }else{
-                this.runner.speedLevel.max.value += 0.0015;
-
-            }
+        if(Math.random() < 0.03 + this.race.indexOf(this.runner) / 1000) {
+            this.powerUp();
         }
+        this.tick++;
+        if(this.tick > 30){
+            this.updateAverage();
+            this.tick = 0;
+        }
+    }
+
+    private powerUp(){
+        if(Math.random() < this.powerUpRate) {
+            this.runner.health.current.value += 80;
+        }else{
+            this.runner.speedLevel.max.value += 0.0015;
+        }
+    }
+
+    private updateAverage() {
+        this.averageSpeed = (this.averageSpeed * this.updateAverageCount + this.runner.speedLevel.current.value) / (this.updateAverageCount + 1);
+        this.updateAverageCount++;
     }
 
     private log(): void {
