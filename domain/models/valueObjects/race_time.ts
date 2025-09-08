@@ -11,6 +11,10 @@ export class RaceTime extends EventEmitter {
         return this._fromStart;
     }
 
+    get fromStartSecond(): number {
+        return this._fromStart / 60;
+    }
+
     get beforeSecond(): number {
         return this._beforeSecond;
     }
